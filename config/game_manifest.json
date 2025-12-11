@@ -1,0 +1,12 @@
+{
+  "game_id": "game_0008",
+  "code_name": "MG-0008",
+  "title_kr": "타임루프 마을 방어전",
+  "title_en": "Time Loop Village Defense",
+  "genre_tags": ["defense", "idle", "timeloop"],
+  "target_region": ["KR", "SEA"],
+  "engine_version": "1.0.0",
+  "analytics_profile": "default_v1",
+  "created_at": "2025-01-01",
+  "status": "development"
+}

@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "game_id": "game_0008",
+    "code_name": "MG-0008",
+    "title_kr": "타임루프 마을 방어전",
+    "title_en": "Time Loop Village Defense",
+    "version": "0.1.0",
+    "last_updated": "2025-01-01"
+  },
+  "overview": {
+    "genre_tags": ["defense", "idle", "timeloop"],
+    "target_audience": {
+      "age": "15-35",
+      "region": ["KR", "SEA"],
+      "play_style": "casual"
+    },
+    "core_loop": "마을을 방어하고 실패하면 타임루프로 되돌아가 더 강해진 상태로 재도전한다",
+    "unique_selling_point": "타워 디펜스와 타임루프의 조화"
+  },
+  "gameplay": {
+    "core_mechanics": [
+      {
+        "name": "타워 디펜스",
+        "description": "타워를 배치하여 적의 침공 방어"
+      },
+      {
+        "name": "타임루프",
+        "description": "실패 시 시간을 되돌려 메타 진행 획득"
+      },
+      {
+        "name": "방치 자원",
+        "description": "오프라인 시간 동안 자원 자동 획득"
+      }
+    ],
+    "progression": {
+      "type": "loop_and_upgrade",
+      "description": "타임루프를 반복하며 영구 업그레이드 획득"
+    },
+    "session_length": "10-20분"
+  },
+  "economy": {
+    "currencies": [
+      {
+        "name": "골드",
+        "type": "soft",
+        "sources": ["적 처치", "웨이브 클리어", "방치 수익"],
+        "sinks": ["타워 구매", "타워 업그레이드", "상점 구매"]
+      },
+      {
+        "name": "시간 조각",
+        "type": "meta",
+        "sources": ["루프 종료 시", "업적"],
+        "sinks": ["메타 업그레이드", "새로운 타워 해금"]
+      },
+      {
+        "name": "보석",
+        "type": "hard",
+        "sources": ["인앱 구매", "업적", "이벤트"],
+        "sinks": ["특별 타워", "생산 가속", "골드 구매"]
+      }
+    ],
+    "monetization": {
+      "model": "F2P + IAP",
+      "iap_items": ["보석 패키지", "월정액", "스타터 팩"],
+      "ad_placements": ["보상형 광고 (보상 2배, 시간 조각 추가)", "인터스티셜 (루프 종료 후)"]
+    }
+  },
+  "technical": {
+    "platform": ["Android", "iOS"],
+    "engine": "Flutter + Flame",
+    "backend": "Firebase",
+    "analytics": "GA4 + BigQuery"
+  }
+}
