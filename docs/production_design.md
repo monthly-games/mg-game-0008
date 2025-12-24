@@ -278,18 +278,18 @@ double getFlapBoost(int upgradeLevel) {
 ## 6. 프로덕션 체크리스트
 
 ### 핵심 기능
-- [x] 탭 비행 물리
-- [x] 파이프 생성/이동
+- [x] 탭 비행 물리 (중력 980, 노멀/하드 모드)
+- [x] 파이프 생성/이동 (2초 간격, 하드 1.5초)
 - [x] 충돌 감지
-- [x] 점수 시스템
+- [x] 점수 시스템 (파이프 통과 +1)
 - [x] 게임 오버/재시작
-- [ ] 메달 시스템
+- [x] 메달 시스템 (Bronze/Silver/Gold/Platinum)
 
 ### 콘텐츠
-- [ ] 10+ 새 스킨
-- [ ] 5+ 파이프 스킨
-- [ ] 5+ 배경 테마
-- [ ] 튜토리얼
+- [ ] 10+ 새 스킨 (현재 3개: Red/Blue/Gold)
+- [ ] 5+ 파이프 스킨 (현재 3개: Green/Red/Metallic)
+- [ ] 5+ 배경 테마 (현재 2개: Day/Night)
+- [x] 튜토리얼 (3단계)
 
 ### 메타 시스템
 - [x] 프레스티지 시스템
@@ -300,8 +300,8 @@ double getFlapBoost(int upgradeLevel) {
 
 ### 수익화
 - [ ] 광고 SDK
-- [ ] IAP 상품
-- [ ] 상점 UI
+- [ ] IAP 상품 (ShopScreen에서 골드 구매 UI만 있음)
+- [x] 상점 UI (Birds/Pipes/Themes 3탭)
 - [ ] 부활 시스템
 
 ### QA/최적화
