@@ -1,7 +1,13 @@
-# 타임루프 마을 방어전 - BM 설계 문서
+﻿# 타임루프 마을 방어전 - BM 설계 문서
 
 > game_id: game_0008
 > repo: mg-game-0008
+> title_kr: 타임루프 마을 방어전
+> title_en: Time Loop Village Defense
+> genre_tags: defense, idle, timeloop
+> doc_type: bm_design
+> source_of_truth: docs/design/gdd_game_0008.json
+> last_updated: 2025-12-19
 
 ---
 
