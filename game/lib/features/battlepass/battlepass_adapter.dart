@@ -111,7 +111,7 @@ class FlappyBattlePass extends ChangeNotifier {
   }
 
   void incrementMission(String trackingKey, [int amount = 1]) {
-    _manager.incrementMissionProgress(trackingKey, amount);
+    _manager.incrementMissionProgress(trackingKey, amount: amount);
     notifyListeners();
   }
 
