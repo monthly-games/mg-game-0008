@@ -16,11 +16,13 @@ import 'package:mg_common_game/core/ui/screens/daily_quest_screen.dart';
 import 'package:mg_common_game/systems/quests/weekly_challenge.dart';
 import 'package:mg_common_game/core/ui/screens/weekly_challenge_screen.dart';
 import 'package:mg_common_game/core/economy/gold_manager.dart';
+import 'package:mg_common_game/core/ui/mg_ui.dart';
 import 'package:mg_common_game/systems/stats/statistics_manager.dart';
 import 'package:mg_common_game/core/ui/screens/statistics_screen.dart';
 import 'package:mg_common_game/systems/progression/achievement_manager.dart';
 import 'package:mg_common_game/systems/settings/settings_manager.dart';
 import 'package:mg_common_game/core/ui/screens/settings_screen.dart' as common;
+import 'package:mg_common_game/systems/systems.dart';
 import 'hud/mg_flappy_hud.dart';
 
 class MainMenu extends StatefulWidget {
@@ -182,6 +184,12 @@ class _MainMenuState extends State<MainMenu> {
                           Icons.settings,
                           'Settings',
                           () => _showSettingsScreen(context),
+                        ),
+                        _buildUtilityButton(
+                          context,
+                          Icons.collections_bookmark,
+                          'Collection',
+                          () => _showCollectionsScreen(context),
                         ),
                       ],
                     ),
@@ -374,6 +382,132 @@ class _MainMenuState extends State<MainMenu> {
           accentColor: const Color(0xFF87CEEB),
           onClose: () => Navigator.of(context).pop(),
           version: '1.0.0',
+        ),
+      ),
+    );
+  }
+
+  void _showCollectionsScreen(BuildContext context) {
+    final collectionManager = GetIt.I<CollectionManager>();
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Collection'),
+            backgroundColor: const Color(0xFF4A90E2),
+            foregroundColor: Colors.white,
+          ),
+          body: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF87CEEB), Color(0xFF4A90E2)],
+              ),
+            ),
+            child: ListenableBuilder(
+              listenable: collectionManager,
+              builder: (context, child) {
+                final collections = collectionManager.getAllCollections();
+                if (collections.isEmpty) {
+                  return const Center(
+                    child: Text('No collections', style: TextStyle(color: Colors.white70, fontSize: 18)),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: collections.length,
+                  itemBuilder: (context, index) {
+                    final collection = collections[index];
+                    final progress = collectionManager.getProgress(collection.id);
+                    final unlockedCount = collectionManager.getUnlockedCount(collection.id);
+                    final totalCount = collectionManager.getTotalCount(collection.id);
+
+                    return Card(
+                      color: Colors.white.withValues(alpha: 0.15),
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: ExpansionTile(
+                        leading: const Icon(Icons.collections_bookmark, color: Colors.yellow, size: 32),
+                        title: Text(
+                          collection.name,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 4),
+                            Text('$unlockedCount / $totalCount collected', style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                            const SizedBox(height: 6),
+                            MGLinearProgress(
+                              value: progress,
+                              backgroundColor: MGColors.surface,
+                              valueColor: MGColors.warning,
+                            ),
+                          ],
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 0.85,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                              ),
+                              itemCount: collection.items.length,
+                              itemBuilder: (context, itemIndex) {
+                                final item = collection.items[itemIndex];
+                                final isUnlocked = collectionManager.isItemUnlocked(collection.id, item.id);
+                                final rarityColor = Color(CollectionRarity.getColor(item.rarity));
+
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: isUnlocked ? rarityColor : Colors.grey.shade600,
+                                      width: 2,
+                                    ),
+                                    color: isUnlocked ? rarityColor.withValues(alpha: 0.15) : Colors.black26,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        isUnlocked ? Icons.check_circle : Icons.lock,
+                                        color: isUnlocked ? rarityColor : Colors.grey.shade600,
+                                        size: 28,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        isUnlocked ? item.name : '???',
+                                        style: TextStyle(
+                                          color: isUnlocked ? Colors.white : Colors.grey.shade600,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

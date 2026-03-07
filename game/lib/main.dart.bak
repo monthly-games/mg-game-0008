@@ -386,9 +386,9 @@ void _registerCollections() {
       CollectionItem(id: 'skin_blue', name: 'Blue Bird', description: 'Cool blue bird', rarity: CollectionRarity.rare, category: 'bird'),
       CollectionItem(id: 'skin_gold', name: 'Golden Bird', description: 'Premium golden bird', rarity: CollectionRarity.legendary, category: 'bird'),
     ],
-    completionReward: CollectionReward(type: RewardType.gold, amount: 3000),
+    completionReward: CollectionReward(gold: 3000, gems: 200, experience: 500),
     milestoneRewards: {
-      50: CollectionReward(type: RewardType.gold, amount: 500),
+      50: CollectionReward(gold: 500, gems: 25),
     },
   ));
 
@@ -402,9 +402,9 @@ void _registerCollections() {
       CollectionItem(id: 'pipe_red', name: 'Red Pipe', description: 'Bold red pipe', rarity: CollectionRarity.rare, category: 'pipe'),
       CollectionItem(id: 'pipe_metallic', name: 'Metallic Pipe', description: 'Shiny metallic pipe', rarity: CollectionRarity.epic, category: 'pipe'),
     ],
-    completionReward: CollectionReward(type: RewardType.gold, amount: 2000),
+    completionReward: CollectionReward(gold: 2000, gems: 150, experience: 300),
     milestoneRewards: {
-      50: CollectionReward(type: RewardType.gold, amount: 500),
+      50: CollectionReward(gold: 500, gems: 25),
     },
   ));
 
