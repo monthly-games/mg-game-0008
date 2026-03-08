@@ -2,6 +2,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:mg_common_game/core/engine/effects/flame_effects.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class VfxManager extends Component {
   VfxManager();
@@ -21,7 +22,7 @@ class VfxManager extends Component {
     _addEffect(
       FlameParticleEffect.explosion(
           position: position.clone(),
-          color: Colors.white.withValues(alpha: 0.7),
+          color: MGColors.textMediumEmphasis,
           radius: 15.0,
         ),
     );
@@ -32,7 +33,7 @@ class VfxManager extends Component {
     _addEffect(
       FlameParticleEffect.explosion(
           position: position.clone(),
-          color: Colors.green,
+          color: MGColors.success,
           radius: 25.0,
         ),
     );
@@ -43,7 +44,7 @@ class VfxManager extends Component {
     _addEffect(
       FlameParticleEffect.explosion(
           position: position.clone(),
-          color: Colors.red,
+          color: MGColors.error,
           radius: 35.0,
         ),
     );
@@ -51,8 +52,8 @@ class VfxManager extends Component {
 
   /// Show milestone celebration
   void showMilestone(Vector2 position, int score) {
-    final color = score >= 100 ? Colors.purple :
-                  score >= 50 ? Colors.amber : Colors.yellow;
+    final color = score >= 100 ? MGColors.gem :
+                  score >= 50 ? MGColors.gold : MGColors.gold;
     _addEffect(
       FlameParticleEffect.explosion(
           position: position.clone(),
@@ -67,7 +68,7 @@ class VfxManager extends Component {
     _addEffect(
       FlameParticleEffect.explosion(
           position: position.clone(),
-          color: Colors.yellow.shade200,
+          color: MGColors.gold,
           radius: 10.0,
         ),
     );
@@ -78,7 +79,7 @@ class VfxManager extends Component {
     _addEffect(
       FlameParticleEffect.explosion(
           position: position.clone(),
-          color: Colors.amber,
+          color: MGColors.gold,
           radius: 60.0,
         ),
     );

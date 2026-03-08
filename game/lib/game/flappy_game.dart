@@ -14,6 +14,7 @@ import 'theme_manager.dart';
 
 import 'package:mg_common_game/core/audio/audio_manager.dart';
 import '../utils/high_score_manager.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 enum FlappyGameMode { normal, hard }
 
@@ -42,7 +43,7 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   bool paused = false;
 
   @override
-  Color backgroundColor() => const Color(0xFF000000); // Background component covers this
+  Color backgroundColor() => MGColors.backgroundDarkDark; // Background component covers this
 
   @override
   Future<void> onLoad() async {
@@ -225,11 +226,11 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     if (!gameOver) {
       final textPaint = TextPaint(
         style: const TextStyle(
-          color: Colors.white,
+          color: MGColors.textHighEmphasis,
           fontSize: 48,
           fontWeight: FontWeight.bold,
           shadows: [
-            Shadow(offset: Offset(2, 2), blurRadius: 3, color: Colors.black),
+            Shadow(offset: Offset(2, 2), blurRadius: 3, color: MGColors.backgroundDarkDark),
           ],
         ),
       );
@@ -241,10 +242,10 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     if (!gameStarted && !gameOver) {
       final startPaint = TextPaint(
         style: const TextStyle(
-          color: Colors.white,
+          color: MGColors.textHighEmphasis,
           fontSize: 32,
           shadows: [
-            Shadow(offset: Offset(2, 2), blurRadius: 3, color: Colors.black),
+            Shadow(offset: Offset(2, 2), blurRadius: 3, color: MGColors.backgroundDarkDark),
           ],
         ),
       );

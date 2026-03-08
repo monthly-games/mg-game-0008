@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 /// Animated score popup that appears when passing through pipes
 class ScorePopup extends PositionComponent {
@@ -42,14 +43,14 @@ class ScorePopup extends PositionComponent {
     // Create fading text paint
     final fadingPaint = TextPaint(
       style: TextStyle(
-        color: Colors.white.withValues(alpha: opacity),
+        color: MGColors.textHighEmphasis.withValues(alpha: opacity),
         fontSize: 48,
         fontWeight: FontWeight.bold,
         shadows: [
           Shadow(
             offset: const Offset(2, 2),
             blurRadius: 4,
-            color: Colors.black.withValues(alpha: opacity),
+            color: MGColors.backgroundDarkDark.withValues(alpha: opacity),
           ),
         ],
       ),

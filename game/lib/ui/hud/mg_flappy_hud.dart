@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mg_common_game/core/ui/mg_ui.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 /// MG UI 기반 플래피 게임 HUD
 /// mg_common_game의 공통 UI 컴포넌트 활용
@@ -43,8 +44,8 @@ class MGFlappyHud extends StatelessWidget {
                   icon: isPaused ? Icons.play_arrow : Icons.pause,
                   onPressed: isPaused ? onResume : onPause,
                   size: 44,
-                  backgroundColor: Colors.black54,
-                  color: Colors.white,
+                  backgroundColor: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
+                  color: MGColors.textHighEmphasis,
                 ),
 
                 // 점수 표시
@@ -76,7 +77,7 @@ class MGFlappyHud extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.black54,
+                  color: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -84,14 +85,14 @@ class MGFlappyHud extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.emoji_events,
-                      color: Colors.amber,
+                      color: MGColors.gold,
                       size: 20,
                     ),
                     MGSpacing.hXs,
                     Text(
                       'Best: $highScore',
                       style: MGTextStyles.hudSmall.copyWith(
-                        color: Colors.white70,
+                        color: MGColors.textMediumEmphasis,
                       ),
                     ),
                   ],
@@ -107,7 +108,7 @@ class MGFlappyHud extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.black54,
+        color: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: MGColors.warning.withValues(alpha: 0.5),
@@ -117,7 +118,7 @@ class MGFlappyHud extends StatelessWidget {
       child: Text(
         '$score',
         style: MGTextStyles.display.copyWith(
-          color: Colors.white,
+          color: MGColors.textHighEmphasis,
           fontWeight: FontWeight.bold,
           fontSize: 36,
         ),

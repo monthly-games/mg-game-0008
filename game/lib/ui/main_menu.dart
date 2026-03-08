@@ -24,6 +24,7 @@ import 'package:mg_common_game/systems/settings/settings_manager.dart';
 import 'package:mg_common_game/core/ui/screens/settings_screen.dart' as common;
 import 'package:mg_common_game/systems/systems.dart';
 import 'hud/mg_flappy_hud.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -42,8 +43,8 @@ class _MainMenuState extends State<MainMenu> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF87CEEB), // Sky Blue
-              Color(0xFF4A90E2), // Darker Blue
+              MGColors.info, // Sky Blue
+              MGColors.info, // Darker Blue
             ],
           ),
         ),
@@ -62,12 +63,12 @@ class _MainMenuState extends State<MainMenu> {
                           style: TextStyle(
                             fontSize: 64,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: MGColors.textHighEmphasis,
                             shadows: [
                               Shadow(
                                 offset: Offset(4, 4),
                                 blurRadius: 8,
-                                color: Colors.black45,
+                                color: MGColors.backgroundDarkDark.withValues(alpha: 0.45),
                               ),
                             ],
                           ),
@@ -77,12 +78,12 @@ class _MainMenuState extends State<MainMenu> {
                           style: TextStyle(
                             fontSize: 64,
                             fontWeight: FontWeight.bold,
-                            color: Colors.yellow,
+                            color: MGColors.gold,
                             shadows: [
                               Shadow(
                                 offset: Offset(4, 4),
                                 blurRadius: 8,
-                                color: Colors.black45,
+                                color: MGColors.backgroundDarkDark.withValues(alpha: 0.45),
                               ),
                             ],
                           ),
@@ -92,7 +93,7 @@ class _MainMenuState extends State<MainMenu> {
                         const Text(
                           'SELECT MODE',
                           style: TextStyle(
-                            color: Colors.white70,
+                            color: MGColors.textMediumEmphasis,
                             letterSpacing: 2,
                             fontWeight: FontWeight.bold,
                           ),
@@ -104,7 +105,7 @@ class _MainMenuState extends State<MainMenu> {
                           title: 'NORMAL MODE',
                           description: 'Classic pipe dodging action!',
                           icon: Icons.play_arrow,
-                          color: Colors.green,
+                          color: MGColors.success,
                           onTap: () =>
                               _startGame(context, FlappyGameMode.normal),
                           highScoreFuture: HighScoreManager.getHighScore(
@@ -115,7 +116,7 @@ class _MainMenuState extends State<MainMenu> {
                           title: 'HARD MODE',
                           description: 'Narrower gaps, faster speed!',
                           icon: Icons.flash_on,
-                          color: Colors.red,
+                          color: MGColors.error,
                           onTap: () => _startGame(context, FlappyGameMode.hard),
                           highScoreFuture: HighScoreManager.getHighScore(
                             FlappyGameMode.hard.name,
@@ -214,9 +215,9 @@ class _MainMenuState extends State<MainMenu> {
       children: [
         IconButton(
           onPressed: onTap,
-          icon: Icon(icon, color: Colors.white, size: 32),
+          icon: Icon(icon, color: MGColors.textHighEmphasis, size: 32),
           style: IconButton.styleFrom(
-            backgroundColor: Colors.white.withValues(alpha: 0.2),
+            backgroundColor: MGColors.textHighEmphasis.withValues(alpha: 0.2),
             padding: const EdgeInsets.all(12),
           ),
         ),
@@ -224,7 +225,7 @@ class _MainMenuState extends State<MainMenu> {
         Text(
           label,
           style: const TextStyle(
-            color: Colors.white,
+            color: MGColors.textHighEmphasis,
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -276,7 +277,7 @@ class _MainMenuState extends State<MainMenu> {
           prestigeManager: GetIt.I<PrestigeManager>(),
           progressionManager: GetIt.I<ProgressionManager>(),
           title: 'Flappy Bird Prestige',
-          accentColor: const Color(0xFF87CEEB),
+          accentColor: MGColors.info,
           onClose: () => Navigator.of(context).pop(),
           onPrestige: () => _performPrestige(context),
         ),
@@ -304,7 +305,7 @@ class _MainMenuState extends State<MainMenu> {
         content: Text(
           'Prestige successful! Gained $pointsGained prestige points!',
         ),
-        backgroundColor: Colors.amber,
+        backgroundColor: MGColors.gold,
         duration: const Duration(seconds: 3),
       ),
     );
@@ -318,7 +319,7 @@ class _MainMenuState extends State<MainMenu> {
         builder: (context) => DailyQuestScreen(
           questManager: GetIt.I<DailyQuestManager>(),
           title: 'Daily Quests',
-          accentColor: const Color(0xFF87CEEB),
+          accentColor: MGColors.info,
           onClaimReward: (questId, goldReward, xpReward) {
             final goldManager = GetIt.I<GoldManager>();
             final progressionManager = GetIt.I<ProgressionManager>();
@@ -338,7 +339,7 @@ class _MainMenuState extends State<MainMenu> {
         builder: (context) => WeeklyChallengeScreen(
           challengeManager: GetIt.I<WeeklyChallengeManager>(),
           title: 'Weekly Challenges',
-          accentColor: Colors.amber,
+          accentColor: MGColors.gold,
           onClaimReward: (challengeId, goldReward, xpReward, prestigeReward) {
             final goldManager = GetIt.I<GoldManager>();
             final progressionManager = GetIt.I<ProgressionManager>();
@@ -366,7 +367,7 @@ class _MainMenuState extends State<MainMenu> {
           questManager: GetIt.I<DailyQuestManager>(),
           achievementManager: GetIt.I<AchievementManager>(),
           title: 'Statistics',
-          accentColor: const Color(0xFF87CEEB),
+          accentColor: MGColors.info,
           onClose: () => Navigator.of(context).pop(),
         ),
       ),
@@ -379,7 +380,7 @@ class _MainMenuState extends State<MainMenu> {
         builder: (context) => common.SettingsScreen(
           settingsManager: GetIt.I<SettingsManager>(),
           title: 'Settings',
-          accentColor: const Color(0xFF87CEEB),
+          accentColor: MGColors.info,
           onClose: () => Navigator.of(context).pop(),
           version: '1.0.0',
         ),
@@ -395,15 +396,15 @@ class _MainMenuState extends State<MainMenu> {
         builder: (context) => Scaffold(
           appBar: AppBar(
             title: const Text('Collection'),
-            backgroundColor: const Color(0xFF4A90E2),
-            foregroundColor: Colors.white,
+            backgroundColor: MGColors.info,
+            foregroundColor: MGColors.textHighEmphasis,
           ),
           body: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFF87CEEB), Color(0xFF4A90E2)],
+                colors: [MGColors.info, MGColors.info],
               ),
             ),
             child: ListenableBuilder(
@@ -412,7 +413,7 @@ class _MainMenuState extends State<MainMenu> {
                 final collections = collectionManager.getAllCollections();
                 if (collections.isEmpty) {
                   return const Center(
-                    child: Text('No collections', style: TextStyle(color: Colors.white70, fontSize: 18)),
+                    child: Text('No collections', style: TextStyle(color: MGColors.textMediumEmphasis, fontSize: 18)),
                   );
                 }
 
@@ -426,19 +427,19 @@ class _MainMenuState extends State<MainMenu> {
                     final totalCount = collectionManager.getTotalCount(collection.id);
 
                     return Card(
-                      color: Colors.white.withValues(alpha: 0.15),
+                      color: MGColors.textHighEmphasis.withValues(alpha: 0.15),
                       margin: const EdgeInsets.only(bottom: 12),
                       child: ExpansionTile(
-                        leading: const Icon(Icons.collections_bookmark, color: Colors.yellow, size: 32),
+                        leading: const Icon(Icons.collections_bookmark, color: MGColors.gold, size: 32),
                         title: Text(
                           collection.name,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: const TextStyle(color: MGColors.textHighEmphasis, fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 4),
-                            Text('$unlockedCount / $totalCount collected', style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                            Text('$unlockedCount / $totalCount collected', style: const TextStyle(color: MGColors.textMediumEmphasis, fontSize: 13)),
                             const SizedBox(height: 6),
                             MGLinearProgress(
                               value: progress,
@@ -469,24 +470,24 @@ class _MainMenuState extends State<MainMenu> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
-                                      color: isUnlocked ? rarityColor : Colors.grey.shade600,
+                                      color: isUnlocked ? rarityColor : MGColors.common,
                                       width: 2,
                                     ),
-                                    color: isUnlocked ? rarityColor.withValues(alpha: 0.15) : Colors.black26,
+                                    color: isUnlocked ? rarityColor.withValues(alpha: 0.15) : MGColors.backgroundDarkDark.withValues(alpha: 0.26),
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
                                         isUnlocked ? Icons.check_circle : Icons.lock,
-                                        color: isUnlocked ? rarityColor : Colors.grey.shade600,
+                                        color: isUnlocked ? rarityColor : MGColors.common,
                                         size: 28,
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
                                         isUnlocked ? item.name : '???',
                                         style: TextStyle(
-                                          color: isUnlocked ? Colors.white : Colors.grey.shade600,
+                                          color: isUnlocked ? MGColors.textHighEmphasis : MGColors.common,
                                           fontSize: 11,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -537,11 +538,11 @@ class GameModeCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: MGColors.textHighEmphasis,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: MGColors.backgroundDarkDark.withValues(alpha: 0.2),
             offset: const Offset(0, 4),
             blurRadius: 8,
           ),
@@ -578,13 +579,13 @@ class GameModeCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: MGColors.backgroundDarkDark.withValues(alpha: 0.87),
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         description,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                        style: TextStyle(fontSize: 14, color: MGColors.common),
                       ),
                     ],
                   ),
@@ -602,22 +603,22 @@ class GameModeCard extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.amber.shade100,
+                            color: MGColors.gold,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.amber),
+                            border: Border.all(color: MGColors.gold),
                           ),
                           child: Column(
                             children: [
                               const Icon(
                                 Icons.emoji_events,
                                 size: 16,
-                                color: Colors.orange,
+                                color: MGColors.warning,
                               ),
                               Text(
                                 '${snapshot.data}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.orange,
+                                  color: MGColors.warning,
                                 ),
                               ),
                             ],

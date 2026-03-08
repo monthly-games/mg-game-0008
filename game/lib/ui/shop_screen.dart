@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mg_common_game/core/economy/gold_manager.dart';
 import '../game/skin_manager.dart';
 import '../game/theme_manager.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
@@ -32,29 +33,29 @@ class _ShopScreenState extends State<ShopScreen>
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackBar(content: Text(message), backgroundColor: MGColors.error),
     );
   }
 
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.green),
+      SnackBar(content: Text(message), backgroundColor: MGColors.success),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF4A90E2),
+      backgroundColor: MGColors.info,
       appBar: AppBar(
         title: const Text(
           'Shop',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: MGColors.textHighEmphasis, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: MGColors.textHighEmphasis),
         actions: [
           // Gold Display
           // Gold Display
@@ -70,21 +71,21 @@ class _ShopScreenState extends State<ShopScreen>
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.3),
+                  color: MGColors.backgroundDarkDark.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.monetization_on,
-                      color: Colors.amber,
+                      color: MGColors.gold,
                       size: 20,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '$gold',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: MGColors.textHighEmphasis,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -96,9 +97,9 @@ class _ShopScreenState extends State<ShopScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.amber,
+          labelColor: MGColors.textHighEmphasis,
+          unselectedLabelColor: MGColors.textMediumEmphasis,
+          indicatorColor: MGColors.gold,
           tabs: const [
             Tab(text: 'Birds', icon: Icon(Icons.catching_pokemon)),
             Tab(text: 'Pipes', icon: Icon(Icons.view_column)),
@@ -254,22 +255,22 @@ class _ShopScreenState extends State<ShopScreen>
   Color _getBirdColor(BirdSkin skin) {
     switch (skin) {
       case BirdSkin.red:
-        return Colors.red;
+        return MGColors.error;
       case BirdSkin.blue:
-        return Colors.blue;
+        return MGColors.info;
       case BirdSkin.gold:
-        return Colors.amber;
+        return MGColors.gold;
     }
   }
 
   Color _getPipeColor(PipeSkin skin) {
     switch (skin) {
       case PipeSkin.green:
-        return Colors.green;
+        return MGColors.success;
       case PipeSkin.red:
         return Colors.redAccent;
       case PipeSkin.metallic:
-        return Colors.blueGrey;
+        return MGColors.surfaceDark;
     }
   }
 
@@ -295,12 +296,12 @@ class _ShopScreenState extends State<ShopScreen>
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: MGColors.textHighEmphasis,
           borderRadius: BorderRadius.circular(16),
-          border: isSelected ? Border.all(color: Colors.amber, width: 3) : null,
+          border: isSelected ? Border.all(color: MGColors.gold, width: 3) : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: MGColors.backgroundDarkDark.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -330,12 +331,12 @@ class _ShopScreenState extends State<ShopScreen>
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: MGColors.success,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
                   'SELECTED',
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+                  style: TextStyle(color: MGColors.textHighEmphasis, fontSize: 12),
                 ),
               )
             else if (isUnlocked)
@@ -345,12 +346,12 @@ class _ShopScreenState extends State<ShopScreen>
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: MGColors.common,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
                   'OWNED',
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+                  style: TextStyle(color: MGColors.textHighEmphasis, fontSize: 12),
                 ),
               )
             else
@@ -360,7 +361,7 @@ class _ShopScreenState extends State<ShopScreen>
                   const Icon(
                     Icons.monetization_on,
                     size: 16,
-                    color: Colors.amber,
+                    color: MGColors.gold,
                   ),
                   const SizedBox(width: 4),
                   Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../utils/high_score_manager.dart';
 import '../../utils/mock_leaderboard.dart';
 import '../game/flappy_game.dart'; // For FlappyGameMode enum
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class CustomLeaderboardScreen extends StatefulWidget {
   const CustomLeaderboardScreen({super.key});
@@ -53,21 +54,21 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF4A90E2),
+      backgroundColor: MGColors.info,
       appBar: AppBar(
         title: const Text(
           'Leaderboards',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: MGColors.textHighEmphasis, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: MGColors.textHighEmphasis),
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.amber,
+          labelColor: MGColors.textHighEmphasis,
+          unselectedLabelColor: MGColors.textMediumEmphasis,
+          indicatorColor: MGColors.gold,
           tabs: const [
             Tab(text: 'Normal Mode', icon: Icon(Icons.play_arrow)),
             Tab(text: 'Hard Mode', icon: Icon(Icons.flash_on)),
@@ -75,7 +76,7 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Colors.white))
+          ? const Center(child: CircularProgressIndicator(color: MGColors.textHighEmphasis))
           : TabBarView(
               controller: _tabController,
               children: [_buildList(_normalScores), _buildList(_hardScores)],
@@ -87,10 +88,10 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: MGColors.textHighEmphasis,
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
+          BoxShadow(color: MGColors.backgroundDarkDark.withValues(alpha: 0.26), blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: ListView.separated(
@@ -104,14 +105,14 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
           // Highlight
           final isPlayer = entry.isPlayer;
           final color = isPlayer
-              ? Colors.amber.withValues(alpha: 0.2)
+              ? MGColors.gold.withValues(alpha: 0.2)
               : Colors.transparent;
 
           // Rank Color
-          Color rankColor = Colors.grey;
-          if (rank == 1) rankColor = Colors.amber;
-          if (rank == 2) rankColor = Colors.grey.shade400; // Silverish
-          if (rank == 3) rankColor = Colors.brown.shade300; // Bronze
+          Color rankColor = MGColors.common;
+          if (rank == 1) rankColor = MGColors.gold;
+          if (rank == 2) rankColor = MGColors.common; // Silverish
+          if (rank == 3) rankColor = MGColors.warning; // Bronze
 
           return Container(
             color: color,
@@ -133,7 +134,7 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
                 entry.name,
                 style: TextStyle(
                   fontWeight: isPlayer ? FontWeight.bold : FontWeight.normal,
-                  color: isPlayer ? Colors.blue.shade800 : Colors.black87,
+                  color: isPlayer ? MGColors.info : MGColors.backgroundDarkDark.withValues(alpha: 0.87),
                 ),
               ),
               trailing: Text(

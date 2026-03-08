@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../game/medal_type.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class GameOverOverlay extends StatelessWidget {
   final int score;
@@ -21,7 +22,7 @@ class GameOverOverlay extends StatelessWidget {
     final isNewRecord = score > 0 && score >= bestScore; // Simplified check
 
     return Container(
-      color: Colors.black54,
+      color: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -31,12 +32,12 @@ class GameOverOverlay extends StatelessWidget {
               style: TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: MGColors.textHighEmphasis,
                 shadows: [
                   Shadow(
                     offset: Offset(0, 4),
                     blurRadius: 8,
-                    color: Colors.black,
+                    color: MGColors.backgroundDarkDark,
                   ),
                 ],
               ),
@@ -80,14 +81,14 @@ class GameOverOverlay extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: _getMedalColor(medal),
-                              border: Border.all(color: Colors.black, width: 2),
+                              border: Border.all(color: MGColors.backgroundDarkDark, width: 2),
                               boxShadow: const [
                                 BoxShadow(blurRadius: 4, offset: Offset(0, 2)),
                               ],
                             ),
                             child: const Icon(
                               Icons.emoji_events,
-                              color: Colors.white,
+                              color: MGColors.textHighEmphasis,
                             ),
                           )
                         else
@@ -114,9 +115,9 @@ class GameOverOverlay extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: MGColors.textHighEmphasis,
                             shadows: [
-                              Shadow(offset: Offset(1, 1), color: Colors.black),
+                              Shadow(offset: Offset(1, 1), color: MGColors.backgroundDarkDark),
                             ],
                           ),
                         ),
@@ -134,9 +135,9 @@ class GameOverOverlay extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: MGColors.textHighEmphasis,
                             shadows: [
-                              Shadow(offset: Offset(1, 1), color: Colors.black),
+                              Shadow(offset: Offset(1, 1), color: MGColors.backgroundDarkDark),
                             ],
                           ),
                         ),
@@ -156,13 +157,13 @@ class GameOverOverlay extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: MGColors.error,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(
                     'NEW HIGH SCORE!',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: MGColors.textHighEmphasis,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -177,13 +178,13 @@ class GameOverOverlay extends StatelessWidget {
               children: [
                 _buildButton(
                   icon: Icons.play_arrow,
-                  color: Colors.green,
+                  color: MGColors.success,
                   onTap: onRestart,
                 ),
                 const SizedBox(width: 24),
                 _buildButton(
                   icon: Icons.menu,
-                  color: Colors.blue,
+                  color: MGColors.info,
                   onTap: onMainMenu,
                 ),
               ],
@@ -201,7 +202,7 @@ class GameOverOverlay extends StatelessWidget {
       case MedalType.silver:
         return const Color(0xFFC0C0C0);
       case MedalType.gold:
-        return const Color(0xFFFFD700);
+        return MGColors.gold;
       case MedalType.platinum:
         return const Color(0xFFE5E4E2);
       default:
@@ -224,10 +225,10 @@ class GameOverOverlay extends StatelessWidget {
           width: 80,
           height: 60,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: MGColors.textHighEmphasis, width: 2),
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Icon(icon, color: Colors.white, size: 40),
+          child: Icon(icon, color: MGColors.textHighEmphasis, size: 40),
         ),
       ),
     );

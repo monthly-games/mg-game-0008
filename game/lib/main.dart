@@ -21,6 +21,7 @@ import 'game/theme_manager.dart';
 import 'screens/daily_quest_screen.dart';
 import 'screens/achievement_screen.dart';
 import 'screens/battlepass_screen.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -436,7 +437,7 @@ class FlappyBirdApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF87CEEB),
+          seedColor: MGColors.info,
           brightness: Brightness.light,
         ),
         useMaterial3: true,

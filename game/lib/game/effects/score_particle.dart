@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 /// Creates particle effects for score events
 class ScoreParticleEffect extends Component {
@@ -33,8 +34,8 @@ class ScoreParticleEffect extends Component {
                 radius: 3.0 + _random.nextDouble() * 2.0,
                 paint: Paint()
                   ..color = Color.lerp(
-                    Colors.yellow,
-                    Colors.orange,
+                    MGColors.gold,
+                    MGColors.warning,
                     _random.nextDouble(),
                   )!,
               ),
@@ -91,8 +92,8 @@ class CollisionParticleEffect extends Component {
                 radius: 4.0 + _random.nextDouble() * 3.0,
                 paint: Paint()
                   ..color = Color.lerp(
-                    Colors.red,
-                    Colors.orange,
+                    MGColors.error,
+                    MGColors.warning,
                     _random.nextDouble(),
                   )!,
               ),
