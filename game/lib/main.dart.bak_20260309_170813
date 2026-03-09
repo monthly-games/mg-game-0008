@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mg_common_game/core/ui/screens/daily_hub_screen.dart';
-import 'package:mg_common_game/systems/retention/daily_challenge_manager.dart';
-import 'package:mg_common_game/systems/retention/streak_manager.dart';
-import 'package:mg_common_game/systems/retention/login_rewards_manager.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_config.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_manager.dart';
 import 'ui/main_menu.dart';
@@ -374,16 +370,6 @@ Future<void> _setupDI() async {
     GetIt.I.registerSingleton(themeManager);
   // BattlePass 시스템
   GetIt.I.registerSingleton(BattlePassManager());
-  // ── Retention Systems for DailyHub ────────────────────────
-  if (!GetIt.I.isRegistered<LoginRewardsManager>()) {
-    GetIt.I.registerSingleton(LoginRewardsManager());
-  }
-  if (!GetIt.I.isRegistered<StreakManager>()) {
-    GetIt.I.registerSingleton(StreakManager());
-  }
-  if (!GetIt.I.isRegistered<DailyChallengeManager>()) {
-    GetIt.I.registerSingleton(DailyChallengeManager());
-  }
   _setupBattlePass();
   }
 }
@@ -460,14 +446,6 @@ class FlappyBirdApp extends StatelessWidget {
         '/daily-quest': (_) => const DailyQuestScreen(),
         '/achievements': (_) => const AchievementScreen(),
         '/battlepass': (_) => const BattlePassScreen(),
-        '/daily-hub': (context) => DailyHubScreen(
-          questManager: GetIt.I<DailyQuestManager>(),
-          loginRewardsManager: GetIt.I<LoginRewardsManager>(),
-          streakManager: GetIt.I<StreakManager>(),
-          challengeManager: GetIt.I<DailyChallengeManager>(),
-          accentColor: MGColors.primaryAction,
-          onClose: () => Navigator.pop(context),
-        ),
       },
       home: const MainMenu(),
     );
