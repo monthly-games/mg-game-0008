@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mg_common_game/core/ui/mg_ui.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 /// MG UI 기반 플래피 게임 HUD
 /// mg_common_game의 공통 UI 컴포넌트 활용
@@ -92,7 +91,7 @@ class MGFlappyHud extends StatelessWidget {
                   icon: isPaused ? Icons.play_arrow : Icons.pause,
                   onPressed: isPaused ? onResume : onPause,
                   size: 44,
-                  backgroundColor: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
+                  backgroundColor: MGColors.backgroundDark.withValues(alpha: 0.54),
                   color: MGColors.textHighEmphasis,
                 ),
 
@@ -125,7 +124,7 @@ class MGFlappyHud extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
+                  color: MGColors.backgroundDark.withValues(alpha: 0.54),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -156,7 +155,7 @@ class MGFlappyHud extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
-        color: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
+        color: MGColors.backgroundDark.withValues(alpha: 0.54),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: MGColors.warning.withValues(alpha: 0.5),

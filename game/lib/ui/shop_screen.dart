@@ -71,7 +71,7 @@ class _ShopScreenState extends State<ShopScreen>
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: MGColors.backgroundDarkDark.withValues(alpha: 0.3),
+                  color: MGColors.backgroundDark.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -301,7 +301,7 @@ class _ShopScreenState extends State<ShopScreen>
           border: isSelected ? Border.all(color: MGColors.gold, width: 3) : null,
           boxShadow: [
             BoxShadow(
-              color: MGColors.backgroundDarkDark.withValues(alpha: 0.1),
+              color: MGColors.backgroundDark.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

@@ -1,28 +1,14 @@
 import 'package:mg_common_game/mg_common_game.dart';
 import 'package:flutter/material.dart';
-import 'package:mg_common_game/systems/battlepass/battlepass_config.dart';
-import 'package:mg_common_game/systems/battlepass/battlepass_manager.dart';
 import 'ui/main_menu.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:mg_common_game/core/audio/audio_manager.dart';
-import 'package:mg_common_game/systems/progression/progression_manager.dart';
-import 'package:mg_common_game/systems/progression/upgrade_manager.dart';
-import 'package:mg_common_game/systems/progression/achievement_manager.dart';
-import 'package:mg_common_game/systems/progression/prestige_manager.dart';
-import 'package:mg_common_game/systems/quests/daily_quest.dart';
-import 'package:mg_common_game/systems/quests/weekly_challenge.dart';
 import 'package:mg_common_game/core/economy/gold_manager.dart';
-import 'package:mg_common_game/systems/settings/settings_manager.dart';
-import 'package:mg_common_game/systems/stats/statistics_manager.dart';
-import 'package:mg_common_game/core/systems/save_manager_helper.dart';
-import 'package:mg_common_game/systems/systems.dart';
 import 'game/skin_manager.dart';
 import 'game/theme_manager.dart';
 import 'screens/daily_quest_screen.dart';
 import 'screens/achievement_screen.dart';
 import 'screens/battlepass_screen.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 import 'screens/collection_screen.dart';
 
 void main() async {

@@ -43,7 +43,7 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   bool paused = false;
 
   @override
-  Color backgroundColor() => MGColors.backgroundDarkDark; // Background component covers this
+  Color backgroundColor() => MGColors.backgroundDark; // Background component covers this
 
   @override
   Future<void> onLoad() async {
@@ -230,7 +230,7 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
           fontSize: 48,
           fontWeight: FontWeight.bold,
           shadows: [
-            Shadow(offset: Offset(2, 2), blurRadius: 3, color: MGColors.backgroundDarkDark),
+            Shadow(offset: Offset(2, 2), blurRadius: 3, color: MGColors.backgroundDark),
           ],
         ),
       );
@@ -245,7 +245,7 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
           color: MGColors.textHighEmphasis,
           fontSize: 32,
           shadows: [
-            Shadow(offset: Offset(2, 2), blurRadius: 3, color: MGColors.backgroundDarkDark),
+            Shadow(offset: Offset(2, 2), blurRadius: 3, color: MGColors.backgroundDark),
           ],
         ),
       );

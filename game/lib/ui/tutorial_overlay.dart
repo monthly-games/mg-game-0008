@@ -94,7 +94,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
     final step = _steps[_currentStep];
 
     return Container(
-      color: MGColors.backgroundDarkDark.withValues(alpha: 0.8),
+      color: MGColors.backgroundDark.withValues(alpha: 0.8),
       child: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,

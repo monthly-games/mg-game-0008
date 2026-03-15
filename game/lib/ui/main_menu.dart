@@ -24,7 +24,6 @@ import 'package:mg_common_game/systems/settings/settings_manager.dart';
 import 'package:mg_common_game/core/ui/screens/settings_screen.dart' as common;
 import 'package:mg_common_game/systems/systems.dart';
 import 'hud/mg_flappy_hud.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});

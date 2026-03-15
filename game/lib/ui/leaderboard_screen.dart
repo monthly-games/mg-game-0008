@@ -97,7 +97,7 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
       child: ListView.separated(
         padding: const EdgeInsets.all(8),
         itemCount: entries.length,
-        separatorBuilder: (_, __) => const Divider(height: 1),
+        separatorBuilder: (_, _) => const Divider(height: 1),
         itemBuilder: (context, index) {
           final entry = entries[index];
           final rank = index + 1;

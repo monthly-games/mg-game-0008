@@ -22,7 +22,7 @@ class GameOverOverlay extends StatelessWidget {
     final isNewRecord = score > 0 && score >= bestScore; // Simplified check
 
     return Container(
-      color: MGColors.backgroundDarkDark.withValues(alpha: 0.54),
+      color: MGColors.backgroundDark.withValues(alpha: 0.54),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -37,7 +37,7 @@ class GameOverOverlay extends StatelessWidget {
                   Shadow(
                     offset: Offset(0, 4),
                     blurRadius: 8,
-                    color: MGColors.backgroundDarkDark,
+                    color: MGColors.backgroundDark,
                   ),
                 ],
               ),
@@ -81,7 +81,7 @@ class GameOverOverlay extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: _getMedalColor(medal),
-                              border: Border.all(color: MGColors.backgroundDarkDark, width: 2),
+                              border: Border.all(color: MGColors.backgroundDark, width: 2),
                               boxShadow: const [
                                 BoxShadow(blurRadius: 4, offset: Offset(0, 2)),
                               ],
@@ -117,7 +117,7 @@ class GameOverOverlay extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: MGColors.textHighEmphasis,
                             shadows: [
-                              Shadow(offset: Offset(1, 1), color: MGColors.backgroundDarkDark),
+                              Shadow(offset: Offset(1, 1), color: MGColors.backgroundDark),
                             ],
                           ),
                         ),
@@ -137,7 +137,7 @@ class GameOverOverlay extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: MGColors.textHighEmphasis,
                             shadows: [
-                              Shadow(offset: Offset(1, 1), color: MGColors.backgroundDarkDark),
+                              Shadow(offset: Offset(1, 1), color: MGColors.backgroundDark),
                             ],
                           ),
                         ),

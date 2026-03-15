@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:mg_common_game/core/assets/asset_types.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'spine_config.dart';
 
 enum BirdSkin {
   red,
@@ -159,5 +161,17 @@ class SkinManager extends ChangeNotifier {
       _unlockedPipes.map((e) => e.index.toString()).toList(),
     );
     notifyListeners();
+  }
+
+  /// 현재 선택된 BirdSkin에 대응하는 SpineAssetMeta를 반환합니다.
+  SpineAssetMeta getSpineMetaForCurrentSkin() {
+    switch (_currentBirdSkin) {
+      case BirdSkin.red:
+        return kRedBirdMeta;
+      case BirdSkin.blue:
+        return kBlueBirdMeta;
+      case BirdSkin.gold:
+        return kGoldBirdMeta;
+    }
   }
 }

@@ -2,11 +2,14 @@ import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mg_common_game/core/assets/asset_types.dart';
+import 'package:mg_common_game/core/ui/mg_ui.dart';
 import 'flappy_game.dart';
 import 'pipe.dart';
 import 'ground.dart';
 import 'effects/score_particle.dart';
 import 'skin_manager.dart';
+import 'spine_config.dart';
 
 // Rewriting properly to use SpriteAnimationComponent for better visual
 class Bird extends SpriteAnimationComponent
@@ -19,6 +22,9 @@ class Bird extends SpriteAnimationComponent
 
   late SpriteAnimation _idleAnimation;
   late SpriteAnimation _flapAnimation;
+
+  /// Spine 렌더링 컴포넌트 (kSpineEnabled=true 일 때만 생성)
+  MGSpineActor? _spineActor;
 
   Bird({required Vector2 position})
     : initialPosition = position.clone(),
@@ -33,6 +39,15 @@ class Bird extends SpriteAnimationComponent
     final skinManager = GetIt.I<SkinManager>();
     final skin = skinManager.currentBirdSkin;
 
+    // ── Spine 렌더링 (활성화 시) ──────────────────────────────
+    if (kSpineEnabled) {
+      final meta = _getMetaForSkin(skin);
+      _spineActor = MGSpineActor(assetKey: meta.key, meta: meta);
+      await add(_spineActor!);
+      return; // Spine 모드에서는 스프라이트 애니메이션 로드 생략
+    }
+
+    // ── 기존 SpriteAnimation 로직 ────────────────────────────
     // Load image
     final image = await game.images.load('bird_skins.png');
     final row = skin.index;
@@ -69,17 +84,35 @@ class Bird extends SpriteAnimationComponent
     animation = _idleAnimation;
   }
 
+  /// BirdSkin → SpineAssetMeta 매핑
+  SpineAssetMeta _getMetaForSkin(BirdSkin skin) {
+    switch (skin) {
+      case BirdSkin.red:
+        return kRedBirdMeta;
+      case BirdSkin.blue:
+        return kBlueBirdMeta;
+      case BirdSkin.gold:
+        return kGoldBirdMeta;
+    }
+  }
+
   void flap() {
     velocity.y = flapStrength;
-    animation = _flapAnimation;
-    // Reset to idle after short time?
-    // Or just keep flapping animation while moving up?
+    if (kSpineEnabled && _spineActor != null) {
+      _spineActor!.playAnimation('flap');
+    } else {
+      animation = _flapAnimation;
+    }
   }
 
   void reset() {
     position = initialPosition.clone();
     velocity = Vector2.zero();
-    animation = _idleAnimation;
+    if (kSpineEnabled && _spineActor != null) {
+      _spineActor!.playAnimation('idle');
+    } else {
+      animation = _idleAnimation;
+    }
     angle = 0;
   }
 
@@ -104,11 +137,17 @@ class Bird extends SpriteAnimationComponent
     if (angle < -0.5) angle = -0.5;
 
     // Animation state
-    if (velocity.y > 0) {
-      // Falling
-      animation = _idleAnimation; // Or glide frame
+    if (kSpineEnabled && _spineActor != null) {
+      if (velocity.y > 0) {
+        _spineActor!.playAnimation('fall');
+      }
+      // flap animation is triggered in flap()
     } else {
-      animation = _flapAnimation;
+      if (velocity.y > 0) {
+        animation = _idleAnimation; // Or glide frame
+      } else {
+        animation = _flapAnimation;
+      }
     }
   }
 
@@ -119,6 +158,9 @@ class Bird extends SpriteAnimationComponent
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is Pipe || other is Ground) {
+      if (kSpineEnabled && _spineActor != null) {
+        _spineActor!.playAnimation('hit', loop: false);
+      }
       game.add(CollisionParticleEffect(position: position.clone()));
       game.endGame();
     }
