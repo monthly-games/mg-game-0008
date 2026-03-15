@@ -1,14 +1,5 @@
+import 'package:mg_common_game/mg_common_game.dart';
 import 'package:flutter/material.dart';
-import 'package:mg_common_game/core/ui/screens/seasonal_event_screen.dart';
-import 'package:mg_common_game/core/ui/screens/tournament_screen.dart';
-import 'package:mg_common_game/core/ui/screens/guild_war_screen.dart';
-import 'package:mg_common_game/systems/events/seasonal_content_manager.dart';
-import 'package:mg_common_game/systems/competitive/tournament_manager.dart';
-import 'package:mg_common_game/systems/social/guild_war_manager.dart';
-import 'package:mg_common_game/core/ui/screens/daily_hub_screen.dart';
-import 'package:mg_common_game/systems/retention/daily_challenge_manager.dart';
-import 'package:mg_common_game/systems/retention/streak_manager.dart';
-import 'package:mg_common_game/systems/retention/login_rewards_manager.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_config.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_manager.dart';
 import 'ui/main_menu.dart';
@@ -379,8 +370,12 @@ Future<void> _setupDI() async {
     final themeManager = ThemeManager();
     await themeManager.load();
     GetIt.I.registerSingleton(themeManager);
+  }
+
   // BattlePass 시스템
-  GetIt.I.registerSingleton(BattlePassManager());
+  if (!GetIt.I.isRegistered<BattlePassManager>()) {
+    GetIt.I.registerSingleton(BattlePassManager());
+  }
   // ── Retention Systems for DailyHub ────────────────────────
   if (!GetIt.I.isRegistered<LoginRewardsManager>()) {
     GetIt.I.registerSingleton(LoginRewardsManager());
@@ -390,7 +385,7 @@ Future<void> _setupDI() async {
   }
   if (!GetIt.I.isRegistered<DailyChallengeManager>()) {
     GetIt.I.registerSingleton(DailyChallengeManager());
-}
+  }
   // ── P3 Engine Systems ─────────────────────────────────────
   if (!GetIt.I.isRegistered<GuildWarManager>()) {
     GetIt.I.registerSingleton(GuildWarManager());
@@ -401,7 +396,8 @@ Future<void> _setupDI() async {
   if (!GetIt.I.isRegistered<SeasonalContentManager>()) {
     GetIt.I.registerSingleton(SeasonalContentManager());
   }
-  _setupBattlePass();
+  if (GetIt.I.isRegistered<BattlePassManager>()) {
+    _setupBattlePass();
   }
 }
 
@@ -409,14 +405,32 @@ void _registerCollections() {
   final collection = GetIt.I<CollectionManager>();
 
   // Bird Skins Collection — 3 skins
-  collection.registerCollection(const Collection(
+  collection.registerCollection(Collection(
     id: 'bird_skins',
     name: 'Bird Skins',
     description: 'Collect all bird skins!',
     items: [
-      CollectionItem(id: 'skin_red', name: 'Red Bird', description: 'Default red bird', rarity: CollectionRarity.common, category: 'bird'),
-      CollectionItem(id: 'skin_blue', name: 'Blue Bird', description: 'Cool blue bird', rarity: CollectionRarity.rare, category: 'bird'),
-      CollectionItem(id: 'skin_gold', name: 'Golden Bird', description: 'Premium golden bird', rarity: CollectionRarity.legendary, category: 'bird'),
+      CollectionItem(
+        id: 'skin_red',
+        name: 'Red Bird',
+        description: 'Default red bird',
+        rarity: CollectionRarity.common,
+        metadata: {'category': 'bird'},
+      ),
+      CollectionItem(
+        id: 'skin_blue',
+        name: 'Blue Bird',
+        description: 'Cool blue bird',
+        rarity: CollectionRarity.rare,
+        metadata: {'category': 'bird'},
+      ),
+      CollectionItem(
+        id: 'skin_gold',
+        name: 'Golden Bird',
+        description: 'Premium golden bird',
+        rarity: CollectionRarity.legendary,
+        metadata: {'category': 'bird'},
+      ),
     ],
     completionReward: CollectionReward(type: RewardType.gold, amount: 3000),
     milestoneRewards: {
@@ -425,14 +439,32 @@ void _registerCollections() {
   ));
 
   // Pipe Skins Collection — 3 skins
-  collection.registerCollection(const Collection(
+  collection.registerCollection(Collection(
     id: 'pipe_skins',
     name: 'Pipe Skins',
     description: 'Collect all pipe skins!',
     items: [
-      CollectionItem(id: 'pipe_green', name: 'Green Pipe', description: 'Classic green pipe', rarity: CollectionRarity.common, category: 'pipe'),
-      CollectionItem(id: 'pipe_red', name: 'Red Pipe', description: 'Bold red pipe', rarity: CollectionRarity.rare, category: 'pipe'),
-      CollectionItem(id: 'pipe_metallic', name: 'Metallic Pipe', description: 'Shiny metallic pipe', rarity: CollectionRarity.epic, category: 'pipe'),
+      CollectionItem(
+        id: 'pipe_green',
+        name: 'Green Pipe',
+        description: 'Classic green pipe',
+        rarity: CollectionRarity.common,
+        metadata: {'category': 'pipe'},
+      ),
+      CollectionItem(
+        id: 'pipe_red',
+        name: 'Red Pipe',
+        description: 'Bold red pipe',
+        rarity: CollectionRarity.rare,
+        metadata: {'category': 'pipe'},
+      ),
+      CollectionItem(
+        id: 'pipe_metallic',
+        name: 'Metallic Pipe',
+        description: 'Shiny metallic pipe',
+        rarity: CollectionRarity.epic,
+        metadata: {'category': 'pipe'},
+      ),
     ],
     completionReward: CollectionReward(type: RewardType.gold, amount: 2000),
     milestoneRewards: {

@@ -90,8 +90,8 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
       decoration: BoxDecoration(
         color: MGColors.textHighEmphasis,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: MGColors.backgroundDarkDark.withValues(alpha: 0.26), blurRadius: 8, offset: Offset(0, 4)),
+        boxShadow: [
+          BoxShadow(color: MGColors.backgroundDark.withValues(alpha: 0.26), blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: ListView.separated(
@@ -134,7 +134,7 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
                 entry.name,
                 style: TextStyle(
                   fontWeight: isPlayer ? FontWeight.bold : FontWeight.normal,
-                  color: isPlayer ? MGColors.info : MGColors.backgroundDarkDark.withValues(alpha: 0.87),
+                  color: isPlayer ? MGColors.info : MGColors.backgroundDark.withValues(alpha: 0.87),
                 ),
               ),
               trailing: Text(

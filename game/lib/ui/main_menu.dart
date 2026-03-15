@@ -58,7 +58,7 @@ class _MainMenuState extends State<MainMenu> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Game Title
-                        const Text(
+                        Text(
                           'FLAPPY',
                           style: TextStyle(
                             fontSize: 64,
@@ -68,12 +68,12 @@ class _MainMenuState extends State<MainMenu> {
                               Shadow(
                                 offset: Offset(4, 4),
                                 blurRadius: 8,
-                                color: MGColors.backgroundDarkDark.withValues(alpha: 0.45),
+                                color: MGColors.backgroundDark.withValues(alpha: 0.45),
                               ),
                             ],
                           ),
                         ),
-                        const Text(
+                        Text(
                           'BIRD',
                           style: TextStyle(
                             fontSize: 64,
@@ -83,7 +83,7 @@ class _MainMenuState extends State<MainMenu> {
                               Shadow(
                                 offset: Offset(4, 4),
                                 blurRadius: 8,
-                                color: MGColors.backgroundDarkDark.withValues(alpha: 0.45),
+                                color: MGColors.backgroundDark.withValues(alpha: 0.45),
                               ),
                             ],
                           ),
@@ -464,7 +464,7 @@ class _MainMenuState extends State<MainMenu> {
                               itemBuilder: (context, itemIndex) {
                                 final item = collection.items[itemIndex];
                                 final isUnlocked = collectionManager.isItemUnlocked(collection.id, item.id);
-                                final rarityColor = Color(CollectionRarity.getColor(item.rarity));
+                                final rarityColor = item.rarity.color;
 
                                 return Container(
                                   decoration: BoxDecoration(
@@ -473,7 +473,7 @@ class _MainMenuState extends State<MainMenu> {
                                       color: isUnlocked ? rarityColor : MGColors.common,
                                       width: 2,
                                     ),
-                                    color: isUnlocked ? rarityColor.withValues(alpha: 0.15) : MGColors.backgroundDarkDark.withValues(alpha: 0.26),
+                                    color: isUnlocked ? rarityColor.withValues(alpha: 0.15) : MGColors.backgroundDark.withValues(alpha: 0.26),
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -542,7 +542,7 @@ class GameModeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: MGColors.backgroundDarkDark.withValues(alpha: 0.2),
+            color: MGColors.backgroundDark.withValues(alpha: 0.2),
             offset: const Offset(0, 4),
             blurRadius: 8,
           ),
@@ -576,10 +576,10 @@ class GameModeCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: MGColors.backgroundDarkDark.withValues(alpha: 0.87),
+                          color: MGColors.backgroundDark.withValues(alpha: 0.87),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -694,16 +694,13 @@ class _GameScreenState extends State<GameScreen> {
                   onResume: null,
                   onDailyHub: () => Navigator.of(context).pushNamed('/daily-hub'),
                   onGuildWar: () {
-                    game.pauseEngine();
-                    Navigator.of(context).pushNamed('/guild-war').then((_) => game.resumeEngine());
+Navigator.of(context).pushNamed('/guild-war');
                   },
                   onTournament: () {
-                    game.pauseEngine();
-                    Navigator.of(context).pushNamed('/tournament').then((_) => game.resumeEngine());
+Navigator.of(context).pushNamed('/tournament');
                   },
                   onSeasonalEvent: () {
-                    game.pauseEngine();
-                    Navigator.of(context).pushNamed('/seasonal-event').then((_) => game.resumeEngine());
+Navigator.of(context).pushNamed('/seasonal-event');
                   },
                 );
               },

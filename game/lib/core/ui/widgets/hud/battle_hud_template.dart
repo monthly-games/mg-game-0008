@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mg_common_game/mg_common_game.dart';
 
 /// Battle/RPG Game HUD Template
 ///
@@ -22,25 +23,28 @@ class MGBattleHudTemplate extends StatelessWidget {
     required this.playerAlive,
     required this.playerTotal,
     required this.enemyAlive,
+    required this.enemyTotal,
+    this.isPlayerTurn = true,
     this.isBattleOver = false,
     this.themeColor,
-    this.playerIcon,
   });
 
   @override
   Widget build(BuildContext context) {
+    final accent = themeColor ?? (isPlayerTurn ? MGColors.success : MGColors.error);
+
     return SafeArea(
       child: Column(
         children: [
-          // Stage/Turn info
-            _buildStageInfo(),
-          // Unit status
+          _buildStageInfo(accent),
+          MGSpacing.vSm,
+          _buildUnitStatus(),
         ],
       ),
     );
   }
 
-  static Widget _buildStageInfo() {
+  Widget _buildStageInfo(Color accent) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: MGSpacing.md,
@@ -49,41 +53,63 @@ class MGBattleHudTemplate extends StatelessWidget {
       decoration: BoxDecoration(
         color: MGColors.surface.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: MGColors.border),
+        border: Border.all(color: accent),
       ),
-      child: _buildUnitStatus(),
-      );
+      child: Text(
+        stageLabel == null ? 'Turn $turn' : '$stageLabel - Turn $turn',
+        style: MGTextStyles.hud.copyWith(
+          color: MGColors.textHighEmphasis,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 
-  static TextStyle _buildPlayerCount() {
-    final player = playerAlive;
-    final enemy = enemyTotal;
-
+  Widget _buildUnitStatus() {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: MGSpacing.sm,
         vertical: MGSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: MGColors.error.withValues(alpha: 0.9),
+        color: MGColors.surface.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(8),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.person, color: MGColors.player, size: 20),
+        border: Border.all(color: MGColors.border),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.person, color: MGColors.success, size: 18),
+          MGSpacing.hXs,
+          Text(
+            '$playerAlive/$playerTotal',
+            style: MGTextStyles.hudSmall.copyWith(
+              color: MGColors.success,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          MGSpacing.hSm,
+          Icon(Icons.smart_toy, color: MGColors.error, size: 18),
+          MGSpacing.hXs,
+          Text(
+            '$enemyAlive/$enemyTotal',
+            style: MGTextStyles.hudSmall.copyWith(
+              color: MGColors.error,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (isBattleOver) ...[
             MGSpacing.hSm,
             Text(
-              '$playerAlive/$playerTotal',
+              isPlayerTurn ? 'Victory' : 'Defeat',
               style: MGTextStyles.hudSmall.copyWith(
-                color: MGColors.player,
+                color: isPlayerTurn ? MGColors.success : MGColors.error,
                 fontWeight: FontWeight.bold,
               ),
+            ),
           ],
         ],
       ),
-  );
+    );
   }
-
-  /// Pre-defined getters for common HUD patterns
-  static const get playerIconColor(Player playerTotal) => MGColors.player;
 }
