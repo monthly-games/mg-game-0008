@@ -1,3 +1,4 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import '../game/medal_type.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
@@ -42,12 +43,12 @@ class GameOverOverlay extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: MGSpacing.xl),
 
             // Score Board
             Container(
               width: 300,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(MGSpacing.lg),
               decoration: BoxDecoration(
                 color: const Color(0xFFDED895), // Light yellowish/beige
                 borderRadius: BorderRadius.circular(16),
@@ -67,7 +68,7 @@ class GameOverOverlay extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: MGSpacing.sm),
                         if (medal != MedalType.none)
                           // We can use the generated asset here later.
                           // For now, use Icon or simple color box if asset not ready.
@@ -121,7 +122,7 @@ class GameOverOverlay extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: MGSpacing.md),
                         const Text(
                           'BEST',
                           style: TextStyle(
@@ -170,7 +171,7 @@ class GameOverOverlay extends StatelessWidget {
                 ),
               ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: MGSpacing.xl),
 
             // Buttons
             Row(
@@ -181,7 +182,7 @@ class GameOverOverlay extends StatelessWidget {
                   color: MGColors.success,
                   onTap: onRestart,
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: MGSpacing.lg),
                 _buildButton(
                   icon: Icons.menu,
                   color: MGColors.info,

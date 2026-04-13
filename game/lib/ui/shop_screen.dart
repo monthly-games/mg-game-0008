@@ -1,3 +1,4 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mg_common_game/core/economy/gold_manager.dart';
@@ -59,11 +60,11 @@ class _ShopScreenState extends State<ShopScreen>
         actions: [
           // Gold Display
           // Gold Display
-          StreamBuilder<int>(
-            stream: _goldManager.onGoldChanged,
-            initialData: _goldManager.currentGold,
-            builder: (context, snapshot) {
-              final gold = snapshot.data ?? 0;
+          AnimatedBuilder(
+            animation: _goldManager,
+            builder: (context, child) {
+              final gold = _goldManager.currentGold;
+
               return Container(
                 margin: const EdgeInsets.only(right: 16),
                 padding: const EdgeInsets.symmetric(
@@ -81,7 +82,7 @@ class _ShopScreenState extends State<ShopScreen>
                       color: MGColors.gold,
                       size: 20,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: MGSpacing.xxs),
                     Text(
                       '$gold',
                       style: const TextStyle(
@@ -119,7 +120,7 @@ class _ShopScreenState extends State<ShopScreen>
       listenable: _skinManager,
       builder: (context, _) {
         return GridView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(MGSpacing.md),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.8,
@@ -165,7 +166,7 @@ class _ShopScreenState extends State<ShopScreen>
       listenable: _skinManager,
       builder: (context, _) {
         return GridView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(MGSpacing.md),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.8,
@@ -211,7 +212,7 @@ class _ShopScreenState extends State<ShopScreen>
       listenable: _themeManager,
       builder: (context, _) {
         return GridView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(MGSpacing.md),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.8,
@@ -311,19 +312,19 @@ class _ShopScreenState extends State<ShopScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(MGSpacing.md),
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, size: 48, color: color),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: MGSpacing.sm),
             Text(
               title,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: MGSpacing.xs),
             if (isSelected)
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -363,7 +364,7 @@ class _ShopScreenState extends State<ShopScreen>
                     size: 16,
                     color: MGColors.gold,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: MGSpacing.xxs),
                   Text(
                     '$cost',
                     style: const TextStyle(fontWeight: FontWeight.bold),

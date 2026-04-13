@@ -1,3 +1,4 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
@@ -143,7 +144,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
 
               // Instructions
               Container(
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(MGSpacing.xl),
                 child: Column(
                   children: [
                     Text(
@@ -155,7 +156,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: MGSpacing.md),
                     Text(
                       step.description,
                       style: const TextStyle(
@@ -210,7 +211,7 @@ class _TutorialOverlayState extends State<TutorialOverlay>
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: MGSpacing.mdLg),
 
                     // Skip button
                     if (_currentStep < _steps.length - 1)

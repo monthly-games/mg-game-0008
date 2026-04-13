@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flame/game.dart';
 import 'package:get_it/get_it.dart';
 import '../game/flappy_game.dart';
@@ -23,7 +24,9 @@ import 'package:mg_common_game/systems/progression/achievement_manager.dart';
 import 'package:mg_common_game/systems/settings/settings_manager.dart';
 import 'package:mg_common_game/core/ui/screens/settings_screen.dart' as common;
 import 'package:mg_common_game/systems/systems.dart';
+import '../l10n/localization.dart';
 import 'hud/mg_flappy_hud.dart';
+
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -87,7 +90,7 @@ class _MainMenuState extends State<MainMenu> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: MGSpacing.xxl),
 
                         const Text(
                           'SELECT MODE',
@@ -97,7 +100,7 @@ class _MainMenuState extends State<MainMenu> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: MGSpacing.md),
 
                         // Game Mode Cards
                         GameModeCard(
@@ -162,7 +165,7 @@ class _MainMenuState extends State<MainMenu> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: MGSpacing.sm),
                     // Second row: Settings and stats
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -200,6 +203,38 @@ class _MainMenuState extends State<MainMenu> {
           ),
         ),
       ),
+      // Spine character placeholder (top-right corner)
+      Positioned(
+        top: 60,
+        right: 16,
+        child: GestureDetector(
+          onTap: () {
+            HapticFeedback.lightImpact();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Flappy Bird greets you!"),
+                duration: Duration(seconds: 1),
+              ),
+            );
+          },
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: MGColors.info.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: MGColors.info, width: 2),
+            ),
+            child: const Icon(
+              Icons.flutter_dash,
+              size: 60,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    ],
+    ),
     );
   }
 
@@ -217,10 +252,10 @@ class _MainMenuState extends State<MainMenu> {
           icon: Icon(icon, color: MGColors.textHighEmphasis, size: 32),
           style: IconButton.styleFrom(
             backgroundColor: MGColors.textHighEmphasis.withValues(alpha: 0.2),
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(MGSpacing.sm),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: MGSpacing.xxs),
         Text(
           label,
           style: const TextStyle(
@@ -394,7 +429,7 @@ class _MainMenuState extends State<MainMenu> {
       MaterialPageRoute(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            title: const Text('Collection'),
+            title: Text(context.l10n.ui_general_no_collections),
             backgroundColor: MGColors.info,
             foregroundColor: MGColors.textHighEmphasis,
           ),
@@ -417,7 +452,7 @@ class _MainMenuState extends State<MainMenu> {
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(MGSpacing.md),
                   itemCount: collections.length,
                   itemBuilder: (context, index) {
                     final collection = collections[index];
@@ -437,7 +472,7 @@ class _MainMenuState extends State<MainMenu> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 4),
+                            const SizedBox(height: MGSpacing.xxs),
                             Text('$unlockedCount / $totalCount collected', style: const TextStyle(color: MGColors.textMediumEmphasis, fontSize: 13)),
                             const SizedBox(height: 6),
                             MGLinearProgress(
@@ -449,7 +484,7 @@ class _MainMenuState extends State<MainMenu> {
                         ),
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(MGSpacing.sm),
                             child: GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -482,7 +517,7 @@ class _MainMenuState extends State<MainMenu> {
                                         color: isUnlocked ? rarityColor : MGColors.common,
                                         size: 28,
                                       ),
-                                      const SizedBox(height: 4),
+                                      const SizedBox(height: MGSpacing.xxs),
                                       Text(
                                         isUnlocked ? item.name : '???',
                                         style: TextStyle(
@@ -554,19 +589,19 @@ class GameModeCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(MGSpacing.mdLg),
             child: Row(
               children: [
                 // Icon
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(MGSpacing.sm),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(icon, color: color, size: 32),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: MGSpacing.md),
 
                 // Text
                 Expanded(
@@ -581,7 +616,7 @@ class GameModeCard extends StatelessWidget {
                           color: MGColors.backgroundDark.withValues(alpha: 0.87),
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: MGSpacing.xxs),
                       Text(
                         description,
                         style: TextStyle(fontSize: 14, color: MGColors.common),
@@ -595,7 +630,7 @@ class GameModeCard extends StatelessWidget {
                   FutureBuilder<int>(
                     future: highScoreFuture,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data! > 0) {
+                      if (snapshot.hasData && GetIt.I<GoldManager>().currentGold! > 0) {
                         return Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
@@ -614,7 +649,7 @@ class GameModeCard extends StatelessWidget {
                                 color: MGColors.warning,
                               ),
                               Text(
-                                '${snapshot.data}',
+                                '${GetIt.I<GoldManager>().currentGold}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: MGColors.warning,
@@ -677,14 +712,14 @@ class _GameScreenState extends State<GameScreen> {
 
           // MG Flappy HUD Overlay (only during active gameplay)
           if (!_showTutorial && !_showPause && !_showGameOver)
-            StreamBuilder<int>(
-              stream: GetIt.I<GoldManager>().onGoldChanged,
-              initialData: GetIt.I<GoldManager>().currentGold,
-              builder: (context, snapshot) {
+            AnimatedBuilder(
+            animation: GetIt.I<GoldManager>(),
+            builder: (context, child) {
+                final goldManager = GetIt.I<GoldManager>();
                 return MGFlappyHud(
                   score: _game.score,
                   highScore: _bestScore,
-                  coins: snapshot.data ?? 0,
+                  coins: goldManager.currentGold,
                   isPaused: false,
                   onPause: () {
                     _game.togglePause();

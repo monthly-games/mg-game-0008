@@ -1,3 +1,4 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import '../../utils/high_score_manager.dart';
 import '../../utils/mock_leaderboard.dart';
@@ -86,7 +87,7 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
 
   Widget _buildList(List<LeaderboardEntry> entries) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(MGSpacing.md),
       decoration: BoxDecoration(
         color: MGColors.textHighEmphasis,
         borderRadius: BorderRadius.circular(16),
@@ -95,7 +96,7 @@ class _CustomLeaderboardScreenState extends State<CustomLeaderboardScreen>
         ],
       ),
       child: ListView.separated(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(MGSpacing.xs),
         itemCount: entries.length,
         separatorBuilder: (_, _) => const Divider(height: 1),
         itemBuilder: (context, index) {

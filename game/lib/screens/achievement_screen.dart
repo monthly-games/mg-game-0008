@@ -1,6 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 // ============================================================
-// Achievement Screen — MG-0008 Flappy Puzzle
+// Achievement Screen -- MG-0008 Flappy Puzzle
 // Genre: Puzzle · Retention System UI
 //
 // Firebase Analytics Events:

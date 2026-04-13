@@ -167,11 +167,35 @@ class SkinManager extends ChangeNotifier {
   SpineAssetMeta getSpineMetaForCurrentSkin() {
     switch (_currentBirdSkin) {
       case BirdSkin.red:
-        return kRedBirdMeta;
+        return kRedBirdMeta ??
+            SpineAssetMeta(
+              key: 'red_bird',
+              path: 'spine/characters/red_bird',
+              atlasPath: 'assets/spine/characters/red_bird/red_bird.atlas',
+              skeletonPath: 'assets/spine/characters/red_bird/red_bird.json',
+              animations: ['idle', 'flap', 'fall', 'hit'],
+              defaultAnimation: 'idle',
+            );
       case BirdSkin.blue:
-        return kBlueBirdMeta;
+        return kBlueBirdMeta ??
+            SpineAssetMeta(
+              key: 'blue_bird',
+              path: 'spine/characters/blue_bird',
+              atlasPath: 'assets/spine/characters/blue_bird/blue_bird.atlas',
+              skeletonPath: 'assets/spine/characters/blue_bird/blue_bird.json',
+              animations: ['idle', 'flap', 'fall', 'hit'],
+              defaultAnimation: 'idle',
+            );
       case BirdSkin.gold:
-        return kGoldBirdMeta;
+        return kGoldBirdMeta ??
+            SpineAssetMeta(
+              key: 'gold_bird',
+              path: 'spine/characters/gold_bird',
+              atlasPath: 'assets/spine/characters/gold_bird/gold_bird.atlas',
+              skeletonPath: 'assets/spine/characters/gold_bird/gold_bird.json',
+              animations: ['idle', 'flap', 'fall', 'hit'],
+              defaultAnimation: 'idle',
+            );
     }
   }
 }
