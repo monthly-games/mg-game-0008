@@ -21,6 +21,7 @@ import 'package:get_it/get_it.dart';
 import '../l10n/localization.dart';
 import 'package:mg_common_game/core/ui/mg_ui.dart';
 import 'package:mg_common_game/systems/quests/daily_quest.dart';
+import 'package:mg_common_game/l10n/extensions.dart';
 
 /// Daily Quest screen for MG-0008 Flappy Puzzle.
 ///

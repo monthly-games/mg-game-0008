@@ -2,6 +2,7 @@ import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 import '../l10n/localization.dart';
+import 'package:mg_common_game/l10n/extensions.dart';
 
 
 class PauseOverlay extends StatelessWidget {

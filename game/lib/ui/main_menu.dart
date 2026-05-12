@@ -26,6 +26,7 @@ import 'package:mg_common_game/core/ui/screens/settings_screen.dart' as common;
 import 'package:mg_common_game/systems/systems.dart';
 import '../l10n/localization.dart';
 import 'hud/mg_flappy_hud.dart';
+import 'package:mg_common_game/l10n/extensions.dart';
 
 
 class MainMenu extends StatefulWidget {

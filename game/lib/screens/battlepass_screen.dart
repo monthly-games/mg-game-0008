@@ -22,6 +22,7 @@ import '../l10n/localization.dart';
 import 'package:mg_common_game/core/ui/widgets/battlepass/battlepass_tier_list.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_config.dart';
 import 'package:mg_common_game/systems/battlepass/battlepass_manager.dart';
+import 'package:mg_common_game/l10n/extensions.dart';
 
 /// Full-screen BattlePass UI with season progress, tier rewards,
 /// mission list, and premium upgrade flow.
