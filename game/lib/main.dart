@@ -1,609 +1,434 @@
-import 'package:mg_common_game/mg_common_game.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'ui/main_menu.dart';
+import 'package:game/game/level_design_config.dart';
+import 'package:game/game/wave_spawn_table.dart';
 
-import 'package:get_it/get_it.dart';
-import 'package:mg_common_game/core/economy/gold_manager.dart';
-import 'package:mg_common_game/l10n/extensions.dart';
-import 'game/skin_manager.dart';
-import 'game/theme_manager.dart';
-import 'screens/daily_quest_screen.dart';
-import 'screens/achievement_screen.dart';
-import 'screens/battlepass_screen.dart';
-import 'screens/collection_screen.dart';
-// // import 'game/tutorial_config.dart'; // TutorialManager not available
-// import 'game/balancing_config.dart';
-// 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await _setupDI();
-//   // ── Tutorial & Balancing ──────────────────────────────────
-//   if (!GetIt.I.isRegistered<TutorialManager>()) {
-//     final tutorialManager = TutorialManager();
-//     await tutorialManager.initialize();
-//     tutorialManager.registerTutorial(
-//       kOnboardingTutorial.id,
-//       kOnboardingTutorial.steps,
-//     );
-//     GetIt.I.registerSingleton<TutorialManager>(tutorialManager);
-//   }
-//   if (!GetIt.I.isRegistered<BalancingManager>()) {
-//     GetIt.I.registerSingleton<BalancingManager>(
-//       BalancingManager(defaultConfig: kDefaultBalancingConfig),
-//     );
-//   }
-//   // ── Q7 DI Fix: Missing Systems ──────────────────────────
-//   if (!GetIt.I.isRegistered<GachaManager>()) {
-//     GetIt.I.registerSingleton<GachaManager>(GachaManager());
-//   }
-// 
-//   runApp(const FlappyBirdApp());
-// }
-// 
-// Future<void> _setupDI() async {
-//   // 1. Audio Manager
-//   if (!GetIt.I.isRegistered<AudioManager>()) {
-//     final audioManager = AudioManager();
-//     GetIt.I.registerSingleton<AudioManager>(audioManager);
-//     await audioManager.initialize();
-//   }
-// 
-//   // 2. Progression Manager
-//   if (!GetIt.I.isRegistered<ProgressionManager>()) {
-//     final progressionManager = ProgressionManager();
-//     if (!GetIt.I.isRegistered<progressionManager>()) {
-    GetIt.I.registerSingleton(progressionManager);
-  };
-// 
-//     progressionManager.onLevelUp = (newLevel) {
-//       if (GetIt.I.isRegistered<SettingsManager>()) {
-//         GetIt.I<SettingsManager>().triggerVibration(
-//           intensity: VibrationIntensity.heavy,
-//         );
-//       }
-//     };
-//   }
-// 
-//   // 3. Upgrade Manager
-//   if (!GetIt.I.isRegistered<UpgradeManager>()) {
-//     final upgradeManager = UpgradeManager();
-//     upgradeManager.registerUpgrade(
-//       Upgrade(
-//         id: 'flap_power',
-//         name: 'Flap Boost',
-//         description: 'Increases flap height by 5%',
-//         maxLevel: 10,
-//         baseCost: 200,
-//         costMultiplier: 1.5,
-//         valuePerLevel: 0.05,
-//       ),
-//     );
-// 
-//     upgradeManager.registerUpgrade(
-//       Upgrade(
-//         id: 'pipe_gap',
-//         name: 'Pipe Gap',
-//         description: 'Increases pipe gap slightly',
-//         maxLevel: 5,
-//         baseCost: 500,
-//         costMultiplier: 1.8,
-//         valuePerLevel: 0.02,
-//       ),
-//     );
-// 
-//     upgradeManager.registerUpgrade(
-//       Upgrade(
-//         id: 'score_multiplier',
-//         name: 'Score Boost',
-//         description: 'Increases score by 10%',
-//         maxLevel: 10,
-//         baseCost: 300,
-//         costMultiplier: 1.5,
-//         valuePerLevel: 0.1,
-//       ),
-//     );
-//     if (!GetIt.I.isRegistered<upgradeManager>()) {
-    GetIt.I.registerSingleton(upgradeManager);
-  };
-//   }
-// 
-//   // 4. Achievement Manager
-//   if (!GetIt.I.isRegistered<AchievementManager>()) {
-//     final achievementManager = AchievementManager();
-//     achievementManager.registerAchievement(
-//       Achievement(
-//         id: 'first_10',
-//         title: 'First Flight',
-//         description: 'Score 10 points',
-//         iconAsset: 'assets/images/icon_bird.png',
-//       ),
-//     );
-//     achievementManager.registerAchievement(
-//       Achievement(
-//         id: 'flappy_50',
-//         title: 'Skilled Flyer',
-//         description: 'Score 50 points',
-//         iconAsset: 'assets/images/icon_star.png',
-//       ),
-//     );
-//     achievementManager.registerAchievement(
-//       Achievement(
-//         id: 'flappy_100',
-//         title: 'Master Flapper',
-//         description: 'Score 100 points',
-//         iconAsset: 'assets/images/icon_crown.png',
-//       ),
-//     );
-//     achievementManager.registerAchievement(
-//       Achievement(
-//         id: 'hard_mode_50',
-//         title: 'Hard Mode Hero',
-//         description: 'Score 50 in Hard Mode',
-//         iconAsset: 'assets/images/icon_flash.png',
-//       ),
-//     );
-// 
-//     achievementManager.onAchievementUnlocked = (achievement) {
-//       if (GetIt.I.isRegistered<SettingsManager>()) {
-//         GetIt.I<SettingsManager>().triggerVibration(
-//           intensity: VibrationIntensity.heavy,
-//         );
-//       }
-//     };
-// 
-//     if (!GetIt.I.isRegistered<achievementManager>()) {
-    GetIt.I.registerSingleton(achievementManager);
-  };
-//   }
-// 
-//   // 5. Prestige Manager
-//   if (!GetIt.I.isRegistered<PrestigeManager>()) {
-//     final prestigeManager = PrestigeManager();
-// 
-//     prestigeManager.registerPrestigeUpgrade(
-//       PrestigeUpgrade(
-//         id: 'prestige_xp_boost',
-//         name: 'XP Accelerator',
-//         description: '+20% XP gain per level',
-//         maxLevel: 10,
-//         costPerLevel: 1,
-//         bonusPerLevel: 0.2,
-//       ),
-//     );
-// 
-//     prestigeManager.registerPrestigeUpgrade(
-//       PrestigeUpgrade(
-//         id: 'prestige_gold_boost',
-//         name: 'Golden Wings',
-//         description: '+15% gold income per level',
-//         maxLevel: 10,
-//         costPerLevel: 1,
-//         bonusPerLevel: 0.15,
-//       ),
-//     );
-// 
-//     prestigeManager.registerPrestigeUpgrade(
-//       PrestigeUpgrade(
-//         id: 'prestige_flap_boost',
-//         name: 'Sky Master',
-//         description: '+5% flap power per level',
-//         maxLevel: 15,
-//         costPerLevel: 2,
-//         bonusPerLevel: 0.05,
-//       ),
-//     );
-// 
-//     if (!GetIt.I.isRegistered<prestigeManager>()) {
-    GetIt.I.registerSingleton(prestigeManager);
-  };
-// 
-//     await prestigeManager.loadPrestigeData();
-//     GetIt.I<ProgressionManager>().setPrestigeManager(prestigeManager);
-//   }
+void main() {
+  runApp(const MyApp());
+}
 
-  // 6. Daily Quest Manager
-  if (!GetIt.I.isRegistered<DailyQuestManager>()) {
-    final questManager = DailyQuestManager();
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-    questManager.registerQuest(
-      DailyQuest(
-        id: 'shop_craft_10',
-        title: 'Master Craftsman',
-        description: 'Craft 10 items',
-        targetValue: 10,
-        goldReward: 150,
-        xpReward: 50,
+  static const gameId = 'MG-0008';
+  static const gameTitle = 'Time Loop Village Defense';
+  static const coreFunLoop = kCoreFunLoop;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: gameTitle,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFD81B60),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
       ),
+      routes: {
+        '/game': (_) => const GameScreen(),
+        '/engine': (_) => const FrameLoopScreen(),
+        '/levels': (_) => const LevelRoadmapScreen(),
+        '/daily': (_) => const DailyHubScreen(),
+        '/retention': (_) => const RetentionHubScreen(),
+        '/guild-war': (_) => const GuildWarScreen(),
+        '/tournament': (_) => const TournamentScreen(),
+        '/seasonal-event': (_) => const SeasonalEventScreen(),
+      },
+      home: const MainMenuScreen(),
     );
-
-    questManager.registerQuest(
-      DailyQuest(
-        id: 'shop_sell_5',
-        title: 'Successful Sales',
-        description: 'Sell 5 items to customers',
-        targetValue: 5,
-        goldReward: 120,
-        xpReward: 60,
-      ),
-    );
-
-    questManager.registerQuest(
-      DailyQuest(
-        id: 'shop_gold_1500',
-        title: 'Shop Tycoon',
-        description: 'Earn 1500 gold from sales',
-        targetValue: 1500,
-        goldReward: 200,
-        xpReward: 75,
-      ),
-    );
-
-    questManager.registerQuest(
-      DailyQuest(
-        id: 'shop_customers_20',
-        title: 'Customer Service',
-        description: 'Serve 20 customers',
-        targetValue: 20,
-        goldReward: 180,
-        xpReward: 70,
-      ),
-    );
-
-    if (!GetIt.I.isRegistered<questManager>()) {
-    GetIt.I.registerSingleton(questManager);
-  };
-
-    questManager.loadQuestData();
-    questManager.checkAndResetIfNeeded();
   }
-// 
-//   // 7. Weekly Challenge Manager
-//   if (!GetIt.I.isRegistered<WeeklyChallengeManager>()) {
-//     final challengeManager = WeeklyChallengeManager();
-// 
-//     challengeManager.onChallengeCompleted = (challenge) {
-//       if (GetIt.I.isRegistered<SettingsManager>()) {
-//         GetIt.I<SettingsManager>().triggerVibration(
-//           intensity: VibrationIntensity.heavy,
-//         );
-//       }
-//     };
-// 
-//     challengeManager.registerChallenge(
-//       WeeklyChallenge(
-//         id: 'weekly_flappy_play_30',
-//         title: 'Frequent Flyer',
-//         description: 'Play 30 games',
-//         targetValue: 30,
-//         goldReward: 500,
-//         xpReward: 250,
-//         tier: ChallengeTier.bronze,
-//       ),
-//     );
-// 
-//     challengeManager.registerChallenge(
-//       WeeklyChallenge(
-//         id: 'weekly_flappy_score_500',
-//         title: 'Point Collector',
-//         description: 'Score 500 total points',
-//         targetValue: 500,
-//         goldReward: 750,
-//         xpReward: 400,
-//         tier: ChallengeTier.silver,
-//       ),
-//     );
-// 
-//     challengeManager.registerChallenge(
-//       WeeklyChallenge(
-//         id: 'weekly_flappy_normal_100',
-//         title: 'Normal Master',
-//         description: 'Score 100 in Normal mode',
-//         targetValue: 100,
-//         goldReward: 1000,
-//         xpReward: 500,
-//         tier: ChallengeTier.silver,
-//       ),
-//     );
-// 
-//     challengeManager.registerChallenge(
-//       WeeklyChallenge(
-//         id: 'weekly_flappy_hard_50',
-//         title: 'Hard Mode Champion',
-//         description: 'Score 50 in Hard mode',
-//         targetValue: 50,
-//         goldReward: 1500,
-//         xpReward: 800,
-//         prestigePointReward: 1,
-//         tier: ChallengeTier.gold,
-//       ),
-//     );
-// 
-//     challengeManager.registerChallenge(
-//       WeeklyChallenge(
-//         id: 'weekly_flappy_legend',
-//         title: 'Flappy Legend',
-//         description: 'Score 200 in any mode',
-//         targetValue: 200,
-//         goldReward: 2000,
-//         xpReward: 1000,
-//         prestigePointReward: 2,
-//         tier: ChallengeTier.platinum,
-//       ),
-//     );
-// 
-//     if (!GetIt.I.isRegistered<challengeManager>()) {
-    GetIt.I.registerSingleton(challengeManager);
-  };
-// 
-//     await challengeManager.loadChallengeData();
-//     await challengeManager.checkAndResetIfNeeded();
-//   }
-// 
-//   // 8. Gold Manager
-//   if (!GetIt.I.isRegistered<GoldManager>()) {
-//     if (!GetIt.I.isRegistered<GoldManager(>()) {
-    GetIt.I.registerSingleton(GoldManager();
+}
+
+class MainMenuScreen extends StatelessWidget {
+  const MainMenuScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Icon(Icons.videogame_asset_rounded, size: 72),
+                  const SizedBox(height: 24),
+                  Text(
+                    MyApp.gameId,
+                    key: const ValueKey('game-id'),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    MyApp.gameTitle,
+                    key: const ValueKey('game-title'),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Core Fun: ${MyApp.coreFunLoop}',
+                    key: const ValueKey('core-fun-loop'),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  FilledButton.icon(
+                    key: const ValueKey('start-game'),
+                    onPressed: () => Navigator.of(context).pushNamed('/game'),
+                    icon: const Icon(Icons.play_arrow_rounded),
+                    label: const Text('Start Game'),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    key: const ValueKey('level-roadmap'),
+                    onPressed: () => Navigator.of(context).pushNamed('/levels'),
+                    icon: const Icon(Icons.map_rounded),
+                    label: const Text('Level Roadmap'),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: const [
+                      _MenuAction(
+                        route: '/engine',
+                        buttonKey: ValueKey('engine-loop'),
+                        icon: Icons.memory_rounded,
+                        label: 'Engine',
+                      ),
+                      _MenuAction(
+                        route: '/retention',
+                        buttonKey: ValueKey('rewards'),
+                        icon: Icons.card_giftcard_rounded,
+                        label: 'Rewards',
+                      ),
+                      _MenuAction(
+                        route: '/daily',
+                        buttonKey: ValueKey('daily-quests'),
+                        icon: Icons.today_rounded,
+                        label: 'Daily',
+                      ),
+                      _MenuAction(
+                        route: '/guild-war',
+                        buttonKey: ValueKey('guild-war'),
+                        icon: Icons.groups_rounded,
+                        label: 'Guild',
+                      ),
+                      _MenuAction(
+                        route: '/tournament',
+                        buttonKey: ValueKey('tournament'),
+                        icon: Icons.emoji_events_rounded,
+                        label: 'Tournament',
+                      ),
+                      _MenuAction(
+                        route: '/seasonal-event',
+                        buttonKey: ValueKey('seasonal-event'),
+                        icon: Icons.event_rounded,
+                        label: 'Event',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MenuAction extends StatelessWidget {
+  const _MenuAction({
+    required this.route,
+    required this.buttonKey,
+    required this.icon,
+    required this.label,
   });
-//   }
-// 
-//   // 8.5. Collection Manager
-//   if (!GetIt.I.isRegistered<CollectionManager>()) {
-//     if (!GetIt.I.isRegistered<CollectionManager(>()) {
-    GetIt.I.registerSingleton(CollectionManager();
-  });
-//     _registerCollections();
-//   }
-// 
-//   // 9. Settings Manager
-//   if (!GetIt.I.isRegistered<SettingsManager>()) {
-//     final settingsManager = SettingsManager();
-//     if (!GetIt.I.isRegistered<settingsManager>()) {
-    GetIt.I.registerSingleton(settingsManager);
-  };
-// 
-//     if (GetIt.I.isRegistered<AudioManager>()) {
-//       settingsManager.setAudioManager(GetIt.I<AudioManager>());
-//     }
-// 
-//     await settingsManager.loadSettings();
-//   }
-// 
-//   // 10. Statistics Manager
-//   if (!GetIt.I.isRegistered<StatisticsManager>()) {
-//     final statisticsManager = StatisticsManager();
-//     if (!GetIt.I.isRegistered<statisticsManager>()) {
-    GetIt.I.registerSingleton(statisticsManager);
-  };
-// 
-//     await statisticsManager.loadStats();
-//     statisticsManager.startSession();
-//   }
-// 
-//   // 11. Save Manager
-//   await SaveManagerHelper.setupSaveManager(
-//     autoSaveEnabled: true,
-//     autoSaveIntervalSeconds: 30,
-//   );
-// 
-//   await SaveManagerHelper.legacyLoadAll();
-// 
-//   // 12. Skin Manager
-//   if (!GetIt.I.isRegistered<SkinManager>()) {
-//     final skinManager = SkinManager();
-//     await skinManager.load();
-//     if (!GetIt.I.isRegistered<skinManager>()) {
-    GetIt.I.registerSingleton(skinManager);
-  };
-//   }
-// 
-//   // 13. Theme Manager
-//   if (!GetIt.I.isRegistered<ThemeManager>()) {
-//     final themeManager = ThemeManager();
-//     await themeManager.load();
-//     if (!GetIt.I.isRegistered<themeManager>()) {
-    GetIt.I.registerSingleton(themeManager);
-  };
-//   }
-// 
-//   // BattlePass 시스템
-//   if (!GetIt.I.isRegistered<BattlePassManager>()) {
-//     if (!GetIt.I.isRegistered<BattlePassManager(>()) {
-    GetIt.I.registerSingleton(BattlePassManager();
-  });
-//   }
-//   // ── Retention Systems for DailyHub ────────────────────────
-//   if (!GetIt.I.isRegistered<LoginRewardsManager>()) {
-//     if (!GetIt.I.isRegistered<LoginRewardsManager(>()) {
-    GetIt.I.registerSingleton(LoginRewardsManager();
-  });
-//   }
-//   if (!GetIt.I.isRegistered<StreakManager>()) {
-//     if (!GetIt.I.isRegistered<StreakManager(>()) {
-    GetIt.I.registerSingleton(StreakManager();
-  });
-//   }
-//   if (!GetIt.I.isRegistered<DailyChallengeManager>()) {
-//     if (!GetIt.I.isRegistered<DailyChallengeManager(>()) {
-    GetIt.I.registerSingleton(DailyChallengeManager();
-  });
-//   }
-//   // ── P3 Engine Systems ─────────────────────────────────────
-//   if (!GetIt.I.isRegistered<GuildWarManager>()) {
-//     if (!GetIt.I.isRegistered<GuildWarManager(>()) {
-    GetIt.I.registerSingleton(GuildWarManager();
-  });
-//   }
-//   if (!GetIt.I.isRegistered<TournamentManager>()) {
-//     if (!GetIt.I.isRegistered<TournamentManager(>()) {
-    GetIt.I.registerSingleton(TournamentManager();
-  });
-//   }
-//   if (!GetIt.I.isRegistered<SeasonalContentManager>()) {
-//     if (!GetIt.I.isRegistered<SeasonalContentManager(>()) {
-    GetIt.I.registerSingleton(SeasonalContentManager();
-  });
-//   }
-//   if (GetIt.I.isRegistered<BattlePassManager>()) {
-//     _setupBattlePass();
-//   }
-// }
-// 
-// void _registerCollections() {
-//   final collection = GetIt.I<CollectionManager>();
-// 
-//   // Bird Skins Collection -- 3 skins
-//   collection.registerCollection(Collection(
-//     id: 'bird_skins',
-//     name: 'Bird Skins',
-//     description: 'Collect all bird skins!',
-//     items: [
-//       CollectionItem(
-//         id: 'skin_red',
-//         name: 'Red Bird',
-//         description: 'Default red bird',
-//         rarity: CollectionRarity.common,
-//         metadata: {'category': 'bird'},
-//       ),
-//       CollectionItem(
-//         id: 'skin_blue',
-//         name: 'Blue Bird',
-//         description: 'Cool blue bird',
-//         rarity: CollectionRarity.rare,
-//         metadata: {'category': 'bird'},
-//       ),
-//       CollectionItem(
-//         id: 'skin_gold',
-//         name: 'Golden Bird',
-//         description: 'Premium golden bird',
-//         rarity: CollectionRarity.legendary,
-//         metadata: {'category': 'bird'},
-//       ),
-//     ],
-//     completionReward: CollectionReward(type: RewardType.gold, amount: 3000),
-//     milestoneRewards: {
-//       50: CollectionReward(type: RewardType.gold, amount: 500),
-//     },
-//   ));
-// 
-//   // Pipe Skins Collection -- 3 skins
-//   collection.registerCollection(Collection(
-//     id: 'pipe_skins',
-//     name: 'Pipe Skins',
-//     description: 'Collect all pipe skins!',
-//     items: [
-//       CollectionItem(
-//         id: 'pipe_green',
-//         name: 'Green Pipe',
-//         description: 'Classic green pipe',
-//         rarity: CollectionRarity.common,
-//         metadata: {'category': 'pipe'},
-//       ),
-//       CollectionItem(
-//         id: 'pipe_red',
-//         name: 'Red Pipe',
-//         description: 'Bold red pipe',
-//         rarity: CollectionRarity.rare,
-//         metadata: {'category': 'pipe'},
-//       ),
-//       CollectionItem(
-//         id: 'pipe_metallic',
-//         name: 'Metallic Pipe',
-//         description: 'Shiny metallic pipe',
-//         rarity: CollectionRarity.epic,
-//         metadata: {'category': 'pipe'},
-//       ),
-//     ],
-//     completionReward: CollectionReward(type: RewardType.gold, amount: 2000),
-//     milestoneRewards: {
-//       50: CollectionReward(type: RewardType.gold, amount: 500),
-//     },
-//   ));
-// 
-//   // Haptic feedback callbacks
-//   collection.onItemUnlocked = (collectionId, itemId) {
-//     if (GetIt.I.isRegistered<SettingsManager>()) {
-//       GetIt.I<SettingsManager>().triggerVibration(
-//         intensity: VibrationIntensity.medium,
-//       );
-//     }
-//   };
-// 
-//   collection.onCollectionCompleted = (collectionId, reward) {
-//     if (GetIt.I.isRegistered<SettingsManager>()) {
-//       GetIt.I<SettingsManager>().triggerVibration(
-//         intensity: VibrationIntensity.heavy,
-//       );
-//     }
-//   };
-// }
-// 
-// class FlappyBirdApp extends StatelessWidget {
-//   const FlappyBirdApp({super.key});
-// 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flappy Bird',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(
-//           seedColor: MGColors.info,
-//           brightness: Brightness.light,
-//         ),
-//         useMaterial3: true,
-//       ),
-//       routes: {
-//         '/daily-quest': (_) => const DailyQuestScreen(),
-//         '/achievements': (_) => const AchievementScreen(),
-//         '/battlepass': (_) => const BattlePassScreen(),
-//         '/daily-hub': (context) => DailyHubScreen(
-//           questManager: GetIt.I<DailyQuestManager>(),
-//           loginRewardsManager: GetIt.I<LoginRewardsManager>(),
-//           streakManager: GetIt.I<StreakManager>(),
-//           challengeManager: GetIt.I<DailyChallengeManager>(),
-//           accentColor: MGColors.primaryAction,
-//           onClose: () => Navigator.pop(context),
-//         ),
-//       
-//         '/collection': (context) => CollectionScreen(
-//           collectionManager: GetIt.I<CollectionManager>(),
-//         ),
-//         '/guild-war': (context) => GuildWarScreen(
-//           guildWarManager: GetIt.I<GuildWarManager>(),
-//           accentColor: MGColors.primaryAction,
-//           onClose: () => Navigator.pop(context),
-//           ),
-//         '/tournament': (context) => TournamentScreen(
-//           tournamentManager: GetIt.I<TournamentManager>(),
-//           accentColor: MGColors.primaryAction,
-//           onClose: () => Navigator.pop(context),
-//           ),
-//         '/seasonal-event': (context) => SeasonalEventScreen(
-//           seasonalContentManager: GetIt.I<SeasonalContentManager>(),
-//           accentColor: MGColors.primaryAction,
-//           onClose: () => Navigator.pop(context),
-//           ),
-// },
-//       home: const MainMenu(),
-//     );
-//   }
-// }
-// 
-// 
-// void _setupBattlePass() {
-//   final bp = GetIt.I<BattlePassManager>();
-// 
-//   final season = BPSeasonBuilder.create28DaySeason(
-//     id: 'season_1',
-//     nameKr: '시즌 1',
-//     startDate: DateTime.now().subtract(const Duration(days: 1)),
-//     maxLevel: 50,
-//     expPerLevel: 1000,
-//   );
-// 
-//   bp.setSeason(season);
-//   bp.setMissions(
-//     daily: BPSeasonBuilder.createDefaultDailyMissions(),
-//     weekly: BPSeasonBuilder.createDefaultWeeklyMissions(),
-//   );
-// }
+
+  final String route;
+  final ValueKey<String> buttonKey;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 132,
+      child: OutlinedButton.icon(
+        key: buttonKey,
+        onPressed: () => Navigator.of(context).pushNamed(route),
+        icon: Icon(icon),
+        label: Text(label),
+      ),
+    );
+  }
+}
+
+class GameScreen extends StatefulWidget {
+  const GameScreen({super.key});
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  int levelIndex = 0;
+  int goldBank = 0;
+  int xpBank = 0;
+
+  GameLevelDesign get currentLevel => kLevelDesign[levelIndex];
+
+  void completeAction() {
+    setState(() {
+      goldBank += currentLevel.goldReward;
+      xpBank += currentLevel.xpReward;
+      if (levelIndex < kLevelDesign.length - 1) {
+        levelIndex += 1;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final level = currentLevel;
+    final spawn = kWaveSpawnTable[levelIndex];
+    return Scaffold(
+      appBar: AppBar(title: const Text('Game Ready')),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Primary loop: ${MyApp.coreFunLoop}',
+                  key: const ValueKey('primary-loop'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Level ${level.levelIndex} - ${level.stage}',
+                  key: const ValueKey('level-name'),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Objective: ${level.objective}',
+                  key: const ValueKey('level-objective'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Wave ${level.wave} | Difficulty ${level.difficulty.toStringAsFixed(2)}',
+                  key: const ValueKey('difficulty-label'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Pressure: ${spawn.enemyCount} enemies every '
+                  '${spawn.spawnCadenceSeconds.toStringAsFixed(2)}s',
+                  key: const ValueKey('pressure-label'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                LinearProgressIndicator(
+                  value: (level.levelIndex / kLevelDesign.length).clamp(0.0, 1.0),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Reward bank: $goldBank gold / $xpBank xp',
+                  key: const ValueKey('reward-bank'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                FilledButton.icon(
+                  key: const ValueKey('complete-action'),
+                  onPressed: completeAction,
+                  icon: const Icon(Icons.check_circle_rounded),
+                  label: const Text('Complete Action'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FrameLoopGame extends FlameGame {
+  double elapsedSeconds = 0;
+  int frameTicks = 0;
+
+  @override
+  void update(double dt) {
+    elapsedSeconds += dt;
+    frameTicks += 1;
+    super.update(dt);
+  }
+}
+
+class FrameLoopScreen extends StatelessWidget {
+  const FrameLoopScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Engine Loop')),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'GameWidget frame loop is active for runtime input, update, and render validation.',
+              key: ValueKey('engine-loop-status'),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(child: GameWidget(game: _FrameLoopGame())),
+        ],
+      ),
+    );
+  }
+}
+
+class LevelRoadmapScreen extends StatelessWidget {
+  const LevelRoadmapScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Level Roadmap')),
+      body: ListView.builder(
+        key: const ValueKey('level-list'),
+        padding: const EdgeInsets.all(16),
+        itemCount: kLevelDesign.length,
+        itemBuilder: (context, index) {
+          final level = kLevelDesign[index];
+          final spawn = kWaveSpawnTable[index];
+          return ListTile(
+            leading: CircleAvatar(child: Text('${level.levelIndex}')),
+            title: Text('Level ${level.levelIndex} - ${level.stage}'),
+            subtitle: Text(
+              'Wave ${level.wave} | difficulty ${level.difficulty.toStringAsFixed(2)} | '
+              '${spawn.enemyCount} enemies | reward ${level.goldReward}g/${level.xpReward}xp',
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DailyHubScreen extends StatelessWidget {
+  const DailyHubScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Daily Quests',
+      detail: 'Short goals keep the fun loop moving.',
+      icon: Icons.today_rounded,
+    );
+  }
+}
+
+class RetentionHubScreen extends StatelessWidget {
+  const RetentionHubScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Rewards',
+      detail: 'Progression loop: return, claim, improve.',
+      icon: Icons.card_giftcard_rounded,
+    );
+  }
+}
+
+class GuildWarScreen extends StatelessWidget {
+  const GuildWarScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Guild War',
+      detail: 'Social competition is reachable from the main loop.',
+      icon: Icons.groups_rounded,
+    );
+  }
+}
+
+class TournamentScreen extends StatelessWidget {
+  const TournamentScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Tournament',
+      detail: 'Competitive goals are available for mastery.',
+      icon: Icons.emoji_events_rounded,
+    );
+  }
+}
+
+class SeasonalEventScreen extends StatelessWidget {
+  const SeasonalEventScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Seasonal Event',
+      detail: 'Timed content gives the loop a fresh reason to return.',
+      icon: Icons.event_rounded,
+    );
+  }
+}
+
+class _SimpleScreen extends StatelessWidget {
+  const _SimpleScreen({required this.title, required this.detail, required this.icon});
+
+  final String title;
+  final String detail;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 56),
+              const SizedBox(height: 16),
+              Text(
+                title,
+                key: const ValueKey('screen-title'),
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(detail, key: const ValueKey('screen-detail'), textAlign: TextAlign.center),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
