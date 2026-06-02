@@ -11,17 +11,24 @@ import 'effects/score_particle.dart';
 import 'effects/score_popup.dart';
 import 'effects/screen_shake.dart';
 import 'theme_manager.dart';
+import 'boss.dart';
+import 'multiplayer_race_manager.dart';
 
 import 'package:mg_common_game/core/audio/audio_manager.dart';
 import '../utils/high_score_manager.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
-enum FlappyGameMode { normal, hard }
+enum FlappyGameMode { normal, hard, boss, multiplayer }
 
 class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   final FlappyGameMode mode;
   final VoidCallback? onGameOver;
-  FlappyGame({this.mode = FlappyGameMode.normal, this.onGameOver});
+  final MultiplayerRaceManager? multiplayerManager;
+  FlappyGame({
+    this.mode = FlappyGameMode.normal,
+    this.onGameOver,
+    this.multiplayerManager,
+  });
 
   AudioManager get _audioManager => GetIt.I<AudioManager>();
   late Bird bird;
@@ -35,6 +42,14 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   bool gameOver = false;
   bool gameStarted = false;
   bool isNewRecord = false;
+
+  // Boss system
+  Boss? currentBoss;
+  bool bossActive = false;
+
+  // Rewards tracking
+  int coinsEarned = 0;
+  int xpEarned = 0;
 
   // Theme
   late Sprite backgroundSprite;
@@ -88,6 +103,9 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     if (gameOver || !gameStarted || paused) return;
 
+    // Boss spawn check
+    _checkBossSpawn();
+
     // 파이프 생성
     pipeSpawnTimer += dt;
     if (pipeSpawnTimer >= pipeSpawnInterval) {
@@ -97,6 +115,11 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     // 점수 계산 (파이프를 지나갔는지 확인)
     _checkScore();
+
+    // Update multiplayer progress
+    if (mode == FlappyGameMode.multiplayer && multiplayerManager != null) {
+      multiplayerManager!.updateScore(score, score); // pipesPassed = score for simplicity
+    }
   }
 
   void _spawnPipes() {
@@ -153,6 +176,55 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
   }
 
+  void _checkBossSpawn() {
+    if (mode != FlappyGameMode.boss) return;
+
+    // Spawn mid-boss at score 50
+    if (score == 50 && currentBoss == null) {
+      _spawnBoss(BossType.midBoss);
+    }
+
+    // Spawn main boss at score 100
+    if (score == 100 && currentBoss == null) {
+      _spawnBoss(BossType.mainBoss);
+    }
+  }
+
+  void _spawnBoss(BossType type) {
+    final boss = Boss(
+      type: type,
+      position: Vector2(size.x - 100, size.y / 2),
+    );
+    add(boss);
+    currentBoss = boss;
+    bossActive = true;
+
+    // Add screen shake on boss spawn
+    add(ScreenShakeEffect(game: this, intensity: 12.0, duration: 0.5));
+
+    // Play boss spawn sound
+    _audioManager.playSfx('score.wav');
+  }
+
+  void defeatBoss() {
+    if (currentBoss == null) return;
+
+    // Grant rewards
+    coinsEarned += currentBoss!.getRewardCoins();
+    xpEarned += currentBoss!.getRewardScore();
+
+    // Remove boss
+    currentBoss!.removeFromParent();
+    currentBoss = null;
+    bossActive = false;
+
+    // Add screen shake for defeat
+    add(ScreenShakeEffect(game: this, intensity: 20.0, duration: 0.8));
+
+    // Play victory sound
+    _audioManager.playSfx('score.wav');
+  }
+
   @override
   void onTapDown(TapDownEvent event) {
     if (paused) return;
@@ -196,16 +268,61 @@ class FlappyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         _audioManager.playSfx('score.wav');
       }
 
+      // Calculate rewards based on mode and score
+      _calculateRewards();
+
       onGameOver?.call();
     }
   }
 
+  void _calculateRewards() {
+    // Base coins from score
+    coinsEarned += score * 2;
+
+    // Mode-specific bonuses
+    switch (mode) {
+      case FlappyGameMode.boss:
+        coinsEarned += 50;
+        xpEarned += score * 3;
+        break;
+      case FlappyGameMode.multiplayer:
+        // Multiplayer rewards handled by race manager
+        break;
+      case FlappyGameMode.hard:
+        coinsEarned += (score * 3).toInt();
+        xpEarned += score * 2;
+        break;
+      default:
+        coinsEarned += score;
+        xpEarned += score;
+        break;
+    }
+  }
+
+  Map<String, int> getRewards() {
+    return {
+      'coins': coinsEarned,
+      'xp': xpEarned,
+      'score': score,
+    };
+  }
+
   void _restart() {
     isNewRecord = false;
+    coinsEarned = 0;
+    xpEarned = 0;
+
     // 모든 파이프 제거
     children.whereType<Pipe>().toList().forEach(
       (pipe) => pipe.removeFromParent(),
     );
+
+    // Remove boss
+    if (currentBoss != null) {
+      currentBoss!.removeFromParent();
+      currentBoss = null;
+      bossActive = false;
+    }
 
     // 새 리셋
     bird.reset();
